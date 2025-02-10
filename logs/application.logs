@@ -1,0 +1,5 @@
+2025-02-10T15:26:36.854+04:00  INFO 33164 --- [CurrencyMate] [Test worker] d.sgd.currencymate.ApplicationStartTest  : Starting ApplicationStartTest using Java 21.0.3 with PID 33164 (started by vovaa in C:\Projects\CurrencyMate)
+2025-02-10T15:26:36.865+04:00  INFO 33164 --- [CurrencyMate] [Test worker] d.sgd.currencymate.ApplicationStartTest  : No active profile set, falling back to 1 default profile: "dev"
+2025-02-10T15:26:39.230+04:00  INFO 33164 --- [CurrencyMate] [Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=11a4dc07-667b-3cae-b8ff-1c6fbbbd8783
+2025-02-10T15:26:40.850+04:00  INFO 33164 --- [CurrencyMate] [Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 27 endpoints beneath base path '/actuator'
+2025-02-10T15:26:40.885+04:00  INFO 33164 --- [CurrencyMate] [Test worker] d.sgd.currencymate.ApplicationStartTest  : Started ApplicationStartTest in 4.692 seconds (process running for 6.837)
