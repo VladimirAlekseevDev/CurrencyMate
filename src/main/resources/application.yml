@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: '/api'
+    context-path: "/api"
 
 spring:
   application:
@@ -19,6 +19,8 @@ logging:
       springframework: INFO
   file:
     name: logs/application.logs
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
 # --- Feign (Spring Cloud)
 feign:
@@ -39,13 +41,24 @@ resilience4j:
         wait-duration-in-open-state: 30000 # ms
         slow-call-rate-threshold: 50 # %
         slow-call-duration-threshold: 3000 # ms
+  retry:
+    instances:
+      default:
+        max-attempts: 3
+        wait-duration: 2000 # ms
 
 management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: "*"
       base-path: /actuator
   endpoint:
     health:
       show-details: always
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

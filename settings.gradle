@@ -5,8 +5,16 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'CurrencyMate'
+rootProject.name = 'currency-mate'
 
 gradle.beforeProject {
     logger.lifecycle("Configuring project ${rootProject.name}")
 }
+
+include ':domain'
+include ':services'
+include ':api'
+
+project(':domain').projectDir = file('modules/domain')
+project(':services').projectDir = file('modules/services')
+project(':api').projectDir = file('modules/api')
