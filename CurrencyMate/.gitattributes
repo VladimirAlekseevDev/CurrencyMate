@@ -1,0 +1,14 @@
+# Gradlew setting
+/gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
+# Using LF as eol symbol for cross platform compatability
+*.java text eol=lf
+*.properties text eol=lf
+*.gradle text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.log text eol=lf
+# Ignore access rights changes
+* -text

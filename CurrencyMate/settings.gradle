@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'CurrencyMate'
+
+gradle.beforeProject {
+    logger.lifecycle("Configuring project ${rootProject.name}")
+}

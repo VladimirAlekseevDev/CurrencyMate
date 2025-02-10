@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  servlet:
+    context-path: '/api'
+
+spring:
+  application:
+    name: CurrencyMate
+  main:
+    banner-mode: console
+    lazy-initialization: true
+  profiles:
+    default: dev
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
+  file:
+    name: logs/application.logs
+
+# --- Feign (Spring Cloud)
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000 # ms
+        read-timeout: 10000 # ms
+        loggerLevel: "none"
+
+# --- Resilience4j (Circuit Breaker) ---
+resilience4j:
+  circuitbreaker:
+    instances:
+      default:
+        sliding-window-size: 100
+        failure-rate-threshold: 50 # %
+        wait-duration-in-open-state: 30000 # ms
+        slow-call-rate-threshold: 50 # %
+        slow-call-duration-threshold: 3000 # ms
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
