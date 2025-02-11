@@ -14,7 +14,9 @@ gradle.beforeProject {
 include ':domain'
 include ':services'
 include ':api'
+include ':adapter-alphavantage'
 
 project(':domain').projectDir = file('modules/domain')
 project(':services').projectDir = file('modules/services')
 project(':api').projectDir = file('modules/api')
+project(':adapter-alphavantage').projectDir = file('modules/adapters/adapter-alphavantage')

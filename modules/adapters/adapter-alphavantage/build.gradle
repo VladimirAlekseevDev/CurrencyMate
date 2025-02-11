@@ -1,0 +1,11 @@
+dependencies {
+    implementation(
+            project(":domain"),
+
+            "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
+            "org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudStarterOpenFeignVersion",
+            "org.springframework.retry:spring-retry:$springRetryVersion",
+            "org.springframework:spring-aspects:$springAspectsVersion",
+    )
+
+}

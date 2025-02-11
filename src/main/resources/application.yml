@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    context-path: "/api"
 
 spring:
   application:
@@ -11,12 +9,16 @@ spring:
     lazy-initialization: true
   profiles:
     default: dev
+  jackson:
+    time-zone: ${APP_TIME_ZONE:UTC}
 
 logging:
   level:
     root: INFO
     org:
       springframework: INFO
+    feign:
+      client: INFO
   file:
     name: logs/application.logs
   pattern:
@@ -28,8 +30,7 @@ feign:
     config:
       default:
         connect-timeout: 5000 # ms
-        read-timeout: 10000 # ms
-        loggerLevel: "none"
+        read-timeout: 15000 # ms
 
 # --- Resilience4j (Circuit Breaker) ---
 resilience4j:
@@ -62,3 +63,12 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+app:
+  adapter:
+    alphavantage:
+      url: ${EXT_ALPHAVANTAGE_URL:https://www.alphavantage.co}
+      apiKey: ${EXT_ALPHAVANTAGE_API_KEY}
+      retry:
+        attempts: ${EXT_ALPHAVANTAGE_RETRY_ATTEMPTS:3}
+        delay: ${EXT_ALPHAVANTAGE_RETRY_DELAY:2000}

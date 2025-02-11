@@ -51,8 +51,8 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" // TODO Maybe move to adapter module
             mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
     }
 
@@ -61,18 +61,18 @@ allprojects {
 dependencies {
     implementation(
             /* Spring Cloud */
-            "org.springframework.cloud:spring-cloud-starter-openfeign", // TODO Maybe move to adapter module
             "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j",
 
             /* Spring Logging */
             "org.springframework.boot:spring-boot-starter-logging", // TODO Maybe move to allprojects
 
-            /* General Spring dependencies */
+            /* Spring Monitoring and Management dependencies */
             "org.springframework.boot:spring-boot-starter-actuator",
 
             project(":domain"),
             project(":services"),
-            project(":api")
+            project(":api"),
+            project(":adapter-alphavantage"),
     )
 
     testImplementation (

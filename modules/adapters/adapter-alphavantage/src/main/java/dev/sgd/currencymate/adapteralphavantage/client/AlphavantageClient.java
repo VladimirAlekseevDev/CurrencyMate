@@ -1,0 +1,22 @@
+package dev.sgd.currencymate.adapteralphavantage.client;
+
+import dev.sgd.currencymate.adapteralphavantage.config.FeignClientConfig;
+import dev.sgd.currencymate.adapteralphavantage.model.ExchangeRateResponse;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@FeignClient(
+    name = "alphavantage-client",
+    url = "${app.adapter.alphavantage.url}",
+    configuration = FeignClientConfig.class)
+public interface AlphavantageClient {
+
+    @GetMapping("/query")
+    ExchangeRateResponse getExchangeRate(
+        @RequestParam("function") String function,
+        @RequestParam("from_currency") String fromCurrency,
+        @RequestParam("to_currency") String toCurrency,
+        @RequestParam("apikey") String apiKey);
+
+}
