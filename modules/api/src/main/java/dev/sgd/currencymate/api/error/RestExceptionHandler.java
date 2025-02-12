@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -60,7 +61,7 @@ public class RestExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(
             errorMessage,
-            "REQUEST_VALIDATION_ERROR");
+            REQUEST_VALIDATION_ERROR.getCode());
 
         return ResponseEntity.badRequest().body(errorResponse);
     }
@@ -69,9 +70,18 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
             ex.getMessage(),
-            "REQUEST_VALIDATION_ERROR");
+            REQUEST_VALIDATION_ERROR.getCode());
 
         return ResponseEntity.badRequest().body(errorResponse);
     }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorResponse> handleHandlerMethodValidationException(HandlerMethodValidationException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            REQUEST_VALIDATION_ERROR.getMessage(),
+            REQUEST_VALIDATION_ERROR.getCode());
+
+        return ResponseEntity.badRequest().body(errorResponse);
+        }
 
 }
