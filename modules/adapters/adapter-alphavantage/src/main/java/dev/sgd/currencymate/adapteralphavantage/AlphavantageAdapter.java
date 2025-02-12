@@ -28,16 +28,11 @@ public class AlphavantageAdapter implements ExchangeRateAdapter {
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retry.delay}"))
     public ExchangeRate getExchangeRate(String fromCurrency, String toCurrency) {
         // TODO add logging of attempt count: RetrySynchronizationManager.getContext().getRetryCount()
-        throw new AdapterException("");
-//        try {
+        throw new RuntimeException();
 //            ExchangeRateResponse response =
 //                client.getExchangeRate("CURRENCY_EXCHANGE_RATE", fromCurrency, toCurrency, apiKey);
 //
 //            return ExchangeRateMapper.INSTANCE.toDomain(response);
-//        } catch (AdapterException e) {
-//            // TODO add logging
-//            throw e;
-//        }
     }
 
 }

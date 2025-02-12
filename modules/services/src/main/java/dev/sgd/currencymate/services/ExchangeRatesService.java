@@ -5,7 +5,6 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 import dev.sgd.currencymate.domain.adapter.ExchangeRateAdapter;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import java.time.OffsetDateTime;
-import java.time.temporal.TemporalUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

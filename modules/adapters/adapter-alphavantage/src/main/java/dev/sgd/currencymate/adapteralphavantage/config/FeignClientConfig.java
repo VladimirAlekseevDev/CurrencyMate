@@ -13,7 +13,10 @@ public class FeignClientConfig {
     @Bean
     public ErrorDecoder errorDecoder() {
         return (methodKey, response) -> {
-            throw new AdapterException("Error in adapter: " + response.status() + " " + response.body().toString());
+            // TODO add logging
+            //  log.error("Error in adapter method '{}': status: {}, response body: {}",
+            //  methodKey, response.status(), response.body().toString())
+            throw new AdapterException();
         };
     }
 
