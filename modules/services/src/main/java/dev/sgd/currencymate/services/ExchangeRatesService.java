@@ -1,10 +1,8 @@
 package dev.sgd.currencymate.services;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 import dev.sgd.currencymate.domain.adapter.ExchangeRateAdapter;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import java.time.OffsetDateTime;
+import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ public class ExchangeRatesService {
         // TODO добавить логирование
         ExchangeRate exchangeRate = exchangeRateAdapter.getExchangeRate(fromCurrency, toCurrency);
 
-        exchangeRate.setReceivedAt(OffsetDateTime.now().truncatedTo(SECONDS));
+        exchangeRate.setReceivedAt(DateTimeUtils.getCurrentOffsetDateTime());
 
         return exchangeRate;
     }

@@ -1,8 +1,6 @@
 package dev.sgd.currencymate.adapteralphavantage;
 
 import dev.sgd.currencymate.adapteralphavantage.client.AlphavantageClient;
-import dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper;
-import dev.sgd.currencymate.adapteralphavantage.model.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.adapter.ExchangeRateAdapter;
 import dev.sgd.currencymate.domain.error.AdapterException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;

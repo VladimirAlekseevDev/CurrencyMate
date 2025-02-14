@@ -2,9 +2,9 @@ package dev.sgd.currencymate.adapteralphavantage.mapper;
 
 import dev.sgd.currencymate.adapteralphavantage.model.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
+import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -29,11 +29,11 @@ public interface ExchangeRateMapper {
             return null;
         }
         if (timeZone == null) {
-            return lastRefreshed.atZone(ZoneId.systemDefault()).toOffsetDateTime();
+            return DateTimeUtils.toOffsetDateTime(lastRefreshed);
         }
 
         try {
-            return lastRefreshed.atZone(ZoneId.of(timeZone)).toOffsetDateTime();
+            return DateTimeUtils.toOffsetDateTime(lastRefreshed, timeZone);
         } catch (Exception e) {
             // TODO add logging
             throw new IllegalArgumentException("Incorrect time zone: " + timeZone, e);
