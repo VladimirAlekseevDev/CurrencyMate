@@ -10,12 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public final class DateTimeUtils {
 
-    private static final ZoneId DEFAULT_TIME_ZONE;
-
-    static {
-        DEFAULT_TIME_ZONE = ZoneId.systemDefault();
-        System.out.println("Default time zone: " + DEFAULT_TIME_ZONE); // TODO add logging
-    }
+    private static final ZoneId DEFAULT_TIME_ZONE = ZoneId.systemDefault();
 
     public static OffsetDateTime getCurrentOffsetDateTime() {
         return OffsetDateTime.now(DEFAULT_TIME_ZONE).truncatedTo(ChronoUnit.SECONDS);
