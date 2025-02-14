@@ -31,4 +31,13 @@ public class ExchangeRatesController {
         );
     }
 
+    @GetMapping("/exchangeRate/daily")
+    public ResponseEntity<Void> getExchangeRateDaily(
+            @Valid @NotBlank @RequestParam(name = "fromCurrency") String fromCurrency,
+            @Valid @NotBlank @RequestParam(name = "toCurrency") String toCurrency) {
+
+        exchangeRatesService.getExchangeRateDaily(fromCurrency, toCurrency);
+        return ResponseEntity.ok().build();
+    }
+
 }

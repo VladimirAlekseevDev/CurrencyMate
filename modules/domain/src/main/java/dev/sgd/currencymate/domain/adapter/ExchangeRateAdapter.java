@@ -7,4 +7,6 @@ public interface ExchangeRateAdapter {
 
     ExchangeRate getExchangeRate(String fromCurrency, String toCurrency) throws AdapterException;
 
+    void getExchangeRateDaily(String fromCurrency, String toCurrency) throws AdapterException;
+
 }

@@ -21,4 +21,8 @@ public class ExchangeRatesService {
         return exchangeRate;
     }
 
+    public void getExchangeRateDaily(String fromCurrency, String toCurrency) {
+        exchangeRateAdapter.getExchangeRateDaily(fromCurrency, toCurrency);
+    }
+
 }

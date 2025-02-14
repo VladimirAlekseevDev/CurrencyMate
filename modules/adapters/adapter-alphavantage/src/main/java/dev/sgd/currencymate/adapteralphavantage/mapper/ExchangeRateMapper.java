@@ -1,6 +1,6 @@
 package dev.sgd.currencymate.adapteralphavantage.mapper;
 
-import dev.sgd.currencymate.adapteralphavantage.model.ExchangeRateResponse;
+import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import java.time.LocalDateTime;

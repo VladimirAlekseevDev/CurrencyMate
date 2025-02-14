@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.adapteralphavantage.model;
+package dev.sgd.currencymate.adapteralphavantage.model.exchangerate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
