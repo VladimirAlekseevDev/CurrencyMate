@@ -2,11 +2,13 @@ package dev.sgd.currencymate.adapteralphavantage;
 
 import dev.sgd.currencymate.adapteralphavantage.client.AlphavantageClient;
 import dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper;
+import dev.sgd.currencymate.adapteralphavantage.mapper.TimeSeriesMapper;
 import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
 import dev.sgd.currencymate.domain.adapter.ExchangeRateAdapter;
 import dev.sgd.currencymate.domain.error.AdapterException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
+import dev.sgd.currencymate.domain.model.TimeSeries;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
@@ -39,11 +41,12 @@ public class AlphavantageAdapter implements ExchangeRateAdapter {
         retryFor = AdapterException.class,
         maxAttemptsExpression = "${app.adapter.alphavantage.retry.attempts}",
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retry.delay}"))
-    public void getExchangeRateDaily(String fromCurrency, String toCurrency) {
+    public TimeSeries getExchangeRateDaily(String fromCurrency, String toCurrency) {
         // TODO add logging of attempt count: RetrySynchronizationManager.getContext().getRetryCount()
         TimeSeriesDailyResponse response = client.getExchangeRateDaily(
             "FX_DAILY", fromCurrency, toCurrency, "compact", apiKey);
-        System.out.println("");
+
+        return TimeSeriesMapper.INSTANCE.toDomain(response);
     }
 
 }

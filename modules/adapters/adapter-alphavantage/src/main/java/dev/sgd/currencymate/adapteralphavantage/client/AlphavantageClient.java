@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
     configuration = FeignClientConfig.class)
 public interface AlphavantageClient {
 
+    /**
+     * <a href="https://www.alphavantage.co/documentation/#currency-exchange">API Reference</a>
+     */
     @GetMapping("/query")
     ExchangeRateResponse getExchangeRate(
         @RequestParam("function") String function,
@@ -20,6 +23,9 @@ public interface AlphavantageClient {
         @RequestParam("to_currency") String toCurrency,
         @RequestParam("apikey") String apiKey);
 
+    /**
+     * <a href="https://www.alphavantage.co/documentation/#fx-daily">API Reference</a>
+     */
     @GetMapping("/query")
     TimeSeriesDailyResponse getExchangeRateDaily(
         @RequestParam("function") String function,

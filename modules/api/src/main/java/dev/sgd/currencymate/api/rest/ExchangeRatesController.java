@@ -2,6 +2,7 @@ package dev.sgd.currencymate.api.rest;
 
 import dev.sgd.currencymate.api.mapper.ExchangeRateMapper;
 import dev.sgd.currencymate.api.model.ExchangeRateResponse;
+import dev.sgd.currencymate.domain.model.TimeSeries;
 import dev.sgd.currencymate.services.ExchangeRatesService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -32,12 +33,13 @@ public class ExchangeRatesController {
     }
 
     @GetMapping("/exchangeRate/daily")
-    public ResponseEntity<Void> getExchangeRateDaily(
+    public ResponseEntity<TimeSeries> getExchangeRateDaily(
             @Valid @NotBlank @RequestParam(name = "fromCurrency") String fromCurrency,
             @Valid @NotBlank @RequestParam(name = "toCurrency") String toCurrency) {
 
-        exchangeRatesService.getExchangeRateDaily(fromCurrency, toCurrency);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(
+            exchangeRatesService.getExchangeRateDaily(fromCurrency, toCurrency)
+        );
     }
 
 }

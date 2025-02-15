@@ -29,7 +29,9 @@ public final class DateTimeUtils {
     }
 
     public static OffsetDateTime toOffsetDateTime(LocalDateTime localDateTime, String timeZone) {
-        return localDateTime.atZone(ZoneId.of(timeZone)).toOffsetDateTime();
+        return timeZone == null ?
+            toOffsetDateTime(localDateTime) :
+            localDateTime.atZone(ZoneId.of(timeZone)).toOffsetDateTime();
     }
 
 

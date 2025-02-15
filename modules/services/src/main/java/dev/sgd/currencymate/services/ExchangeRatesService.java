@@ -2,6 +2,7 @@ package dev.sgd.currencymate.services;
 
 import dev.sgd.currencymate.domain.adapter.ExchangeRateAdapter;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
+import dev.sgd.currencymate.domain.model.TimeSeries;
 import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,12 @@ public class ExchangeRatesService {
         return exchangeRate;
     }
 
-    public void getExchangeRateDaily(String fromCurrency, String toCurrency) {
-        exchangeRateAdapter.getExchangeRateDaily(fromCurrency, toCurrency);
+    public TimeSeries getExchangeRateDaily(String fromCurrency, String toCurrency) {
+        TimeSeries timeSeries = exchangeRateAdapter.getExchangeRateDaily(fromCurrency, toCurrency);
+
+        timeSeries.setReceivedAt(DateTimeUtils.getCurrentOffsetDateTime());
+
+        return timeSeries;
     }
 
 }
