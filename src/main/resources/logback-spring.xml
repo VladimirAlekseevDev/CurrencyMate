@@ -32,14 +32,24 @@
         <includeCallerData>true</includeCallerData>
     </appender>
 
+    <!-- For local testing -->
+    <appender name="CONSOLE_LOGGER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
     <!-- Main Logger -->
     <root level="info">
-        <appender-ref ref="ASYNC_LOGSTASH_FILE_JSON"/>
+<!--        <appender-ref ref="ASYNC_LOGSTASH_FILE_JSON"/>-->
+        <appender-ref ref="CONSOLE_LOGGER"/>
     </root>
 
     <!-- Feign Clients Logger -->
     <logger name="feign.client" level="DEBUG" additivity="false">
-        <appender-ref ref="FEIGN_ASYNC_LOGSTASH_FILE_JSON"/>
+<!--        <appender-ref ref="FEIGN_ASYNC_LOGSTASH_FILE_JSON"/>-->
+        <appender-ref ref="CONSOLE_LOGGER"/>
     </logger>
 
 </configuration>
