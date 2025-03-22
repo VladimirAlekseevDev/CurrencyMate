@@ -1,6 +1,6 @@
 package dev.sgd.currencymate.adapteralphavantage.client;
 
-import dev.sgd.currencymate.adapteralphavantage.config.FeignClientConfig;
+import dev.sgd.currencymate.adapteralphavantage.config.AlphavantageFeignClientConfig;
 import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(
     name = "alphavantage-client",
     url = "${app.adapter.alphavantage.url}",
-    configuration = FeignClientConfig.class)
+    configuration = AlphavantageFeignClientConfig.class)
 public interface AlphavantageClient {
 
     /**

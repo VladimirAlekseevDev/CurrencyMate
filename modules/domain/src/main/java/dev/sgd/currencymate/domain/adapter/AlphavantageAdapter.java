@@ -4,7 +4,7 @@ import dev.sgd.currencymate.domain.error.AdapterException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.TimeSeries;
 
-public interface ExchangeRateAdapter {
+public interface AlphavantageAdapter {
 
     ExchangeRate getExchangeRate(String fromCurrency, String toCurrency) throws AdapterException;
 

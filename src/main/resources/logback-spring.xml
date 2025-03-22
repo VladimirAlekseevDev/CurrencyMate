@@ -1,0 +1,45 @@
+<configuration>
+
+    <appender name="LOGSTASH_FILE_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/logs.json</file>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/logs.%d{yyyy-MM-dd}.%i.json</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FEIGN_FILE_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/feign-logs.json</file>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/feign-logs.%d{yyyy-MM-dd}.%i.json</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="ASYNC_LOGSTASH_FILE_JSON" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH_FILE_JSON"/>
+        <queueSize>1024</queueSize>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+    <appender name="FEIGN_ASYNC_LOGSTASH_FILE_JSON" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FEIGN_FILE_JSON"/>
+        <queueSize>1024</queueSize>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+    <!-- Main Logger -->
+    <root level="info">
+        <appender-ref ref="ASYNC_LOGSTASH_FILE_JSON"/>
+    </root>
+
+    <!-- Feign Clients Logger -->
+    <logger name="feign.client" level="DEBUG" additivity="false">
+        <appender-ref ref="FEIGN_ASYNC_LOGSTASH_FILE_JSON"/>
+    </logger>
+
+</configuration>

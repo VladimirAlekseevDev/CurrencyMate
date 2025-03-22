@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(uses = { DateTimeMapper.class })
 public interface ExchangeRateMapper {
 
-    ExchangeRateMapper INSTANCE = Mappers.getMapper(ExchangeRateMapper.class);
+    ExchangeRateMapper EXCHANGE_RATE_MAPPER = Mappers.getMapper(ExchangeRateMapper.class);
 
     @Mapping(target = "from.code", source = "exchangeRate.fromCurrencyCode")
     @Mapping(target = "from.name", source = "exchangeRate.fromCurrencyName")

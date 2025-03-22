@@ -18,12 +18,9 @@ spring:
 logging:
   level:
     root: INFO
-    org:
-      springframework: INFO
-    feign:
-      client: INFO
-  file:
-    name: logs/application.logs
+    dev.sgd.currencymate: DEBUG
+    org.springframework: DEBUG
+    feign.client: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
