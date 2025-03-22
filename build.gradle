@@ -44,6 +44,8 @@ allprojects {
         )
         implementation(
                 "org.springframework.boot:spring-boot-starter:$springBootVersion",
+                "org.springframework.boot:spring-boot-starter-logging",
+
                 "org.mapstruct:mapstruct:$mapstructVersion",
                 "org.apache.commons:commons-lang3:$commonsLang3Version"
         )
@@ -62,9 +64,6 @@ dependencies {
     implementation(
             /* Spring Cloud */
             "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j",
-
-            /* Spring Logging */
-            "org.springframework.boot:spring-boot-starter-logging", // TODO Maybe move to allprojects
 
             /* Spring Monitoring and Management dependencies */
             "org.springframework.boot:spring-boot-starter-actuator",
