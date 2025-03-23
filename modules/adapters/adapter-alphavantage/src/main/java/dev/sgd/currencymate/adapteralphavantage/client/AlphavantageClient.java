@@ -7,6 +7,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * <a href="https://www.alphavantage.co/documentation/">API Reference</a>
+ */
 @FeignClient(
     name = "alphavantage-client",
     url = "${app.adapter.alphavantage.url}",
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AlphavantageClient {
 
     /**
-     * <a href="https://www.alphavantage.co/documentation/#currency-exchange">API Reference</a>
+     * <a href="https://www.alphavantage.co/documentation/#currency-exchange">Currency Exchange API Reference</a>
      */
     @GetMapping("/query")
     ExchangeRateResponse getExchangeRate(
@@ -24,7 +27,7 @@ public interface AlphavantageClient {
         @RequestParam("apikey") String apiKey);
 
     /**
-     * <a href="https://www.alphavantage.co/documentation/#fx-daily">API Reference</a>
+     * <a href="https://www.alphavantage.co/documentation/#fx-daily">FX Daily API Reference</a>
      */
     @GetMapping("/query")
     TimeSeriesDailyResponse getExchangeRateDaily(
