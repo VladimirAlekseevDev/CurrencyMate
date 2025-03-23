@@ -1,9 +1,6 @@
 package dev.sgd.currencymate.domain.utils;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import lombok.NoArgsConstructor;
 
@@ -34,5 +31,11 @@ public final class DateTimeUtils {
             localDateTime.atZone(ZoneId.of(timeZone)).toOffsetDateTime();
     }
 
+    public static OffsetDateTime toOffsetDateTime(LocalDate localDate, String timeZone) {
+        return timeZone == null ?
+            toOffsetDateTime(localDate.atStartOfDay()) :
+            localDate.atStartOfDay(ZoneId.of(timeZone)).toOffsetDateTime();
+
+    }
 
 }

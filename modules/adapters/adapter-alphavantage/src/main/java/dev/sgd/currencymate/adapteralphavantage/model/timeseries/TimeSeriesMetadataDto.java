@@ -2,6 +2,8 @@ package dev.sgd.currencymate.adapteralphavantage.model.timeseries;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +25,8 @@ public class TimeSeriesMetadataDto {
     private String outputSize;
 
     @JsonProperty("5. Last Refreshed")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime lastRefreshed;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate lastRefreshed;
 
     @JsonProperty("6. Time Zone")
     private String timeZone;
