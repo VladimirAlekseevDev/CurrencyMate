@@ -55,7 +55,8 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
             logger.error("Error getting exchange rate from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}, error: {}",
                 SERVICE_NAME, fromCurrency, toCurrency,
                 getRetryContext().map(RetryContext::getRetryCount).orElse(null),
-                e.getMessage());
+                e.getMessage(),
+                e);
 
             throw new AdapterException();
         }
@@ -79,7 +80,8 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
                 "Error getting exchange rate daily from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}, error: {}",
                 SERVICE_NAME, fromCurrency, toCurrency,
                 getRetryContext().map(RetryContext::getRetryCount).orElse(null),
-                e.getMessage());
+                e.getMessage(),
+                e);
 
             throw new AdapterException();
         }
