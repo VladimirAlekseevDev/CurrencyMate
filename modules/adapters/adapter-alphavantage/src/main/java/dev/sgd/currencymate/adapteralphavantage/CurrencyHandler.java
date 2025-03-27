@@ -3,6 +3,7 @@ package dev.sgd.currencymate.adapteralphavantage;
 import com.opencsv.CSVReader;
 import dev.sgd.currencymate.domain.error.common.InternalException;
 import dev.sgd.currencymate.domain.model.Currency;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -19,22 +20,25 @@ import java.util.List;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
+@Getter
 @Component
 @RequiredArgsConstructor
-public class CurrencyLoader {
+public class CurrencyHandler {
 
-    private String fiatCurrenciesCsvPath = "physical_currency_list.csv";
-    private String cryptoCurrenciesCsvPath = "digital_currency_list.csv";
+    private static final String FIAT_CURRENCIES_CSV_PATH = "physical_currency_list.csv";
+    private static final String CRYPTO_CURRENCIES_CSV_PATH = "digital_currency_list.csv";
 
     private List<Currency> fiatCurrencies;
     private List<Currency> cryptoCurrencies;
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesFromCsv() {
-        fiatCurrencies = loadCurrenciesFromCSV(fiatCurrenciesCsvPath);
-        cryptoCurrencies = loadCurrenciesFromCSV(cryptoCurrenciesCsvPath);
+        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH);
+        cryptoCurrencies = loadCurrenciesFromCSV(CRYPTO_CURRENCIES_CSV_PATH);
 
-        log.info("Loaded {} fiat currencies and {} crypto currencies from CSV files", fiatCurrencies.size(), cryptoCurrencies.size());}
+        log.info("Loaded {} fiat currencies and {} crypto currencies from CSV files",
+                fiatCurrencies.size(), cryptoCurrencies.size());
+    }
 
     private List<Currency> loadCurrenciesFromCSV(String filePath) {
         log.info("Loading Alphavantage currencies from CSV file: {}", filePath);
