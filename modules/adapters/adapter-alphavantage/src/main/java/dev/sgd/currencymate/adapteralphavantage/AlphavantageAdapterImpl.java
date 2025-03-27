@@ -122,7 +122,10 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
         Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
 
-        return DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response, fromCurrency, toCurrency);
+        ExchangeRateDaily exchangeRateDaily = DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response);
+        DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.setCurrenciesNameAndType(exchangeRateDaily, fromCurrency, toCurrency);
+
+        return exchangeRateDaily;
     }
 
     @Override

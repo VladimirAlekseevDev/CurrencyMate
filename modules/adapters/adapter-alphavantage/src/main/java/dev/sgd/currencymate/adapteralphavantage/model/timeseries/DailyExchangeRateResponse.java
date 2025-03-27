@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DailyExchangeRateResponse {

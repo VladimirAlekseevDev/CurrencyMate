@@ -27,8 +27,8 @@ public class GetDailyExchangeRatesUseCase {
 
         ExchangeRateDaily exchangeRateDaily = getExchangeRateDaily(suitableProviders, fromCurrency, toCurrency);
 
-        log.info("Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeries: {}",
-                fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily);
+        log.info("Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeriesCount: {}",
+                fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily.getExchangeRateTimeSeries().size());
 
         return exchangeRateDaily;
     }

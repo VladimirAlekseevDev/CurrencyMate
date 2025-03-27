@@ -10,7 +10,6 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExchangeRateDaily {
