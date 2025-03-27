@@ -2,7 +2,6 @@ package dev.sgd.currencymate.usecase;
 
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import dev.sgd.currencymate.provider.ExchangeRateProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,11 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class GetExchangeRateUseCase {
+public class GetCurrentExchangeRateUseCase {
 
     private final List<ExchangeRateProvider> exchangeRateProviders;
 
-    public GetExchangeRateUseCase(List<ExchangeRateProvider> exchangeRateProviders) {
+    public GetCurrentExchangeRateUseCase(List<ExchangeRateProvider> exchangeRateProviders) {
         this.exchangeRateProviders = exchangeRateProviders;
     }
 

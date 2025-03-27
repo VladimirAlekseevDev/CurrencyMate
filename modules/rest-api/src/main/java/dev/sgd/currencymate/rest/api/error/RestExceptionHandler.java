@@ -4,7 +4,7 @@ import static dev.sgd.currencymate.domain.error.ErrorEnum.REQUEST_VALIDATION_ERR
 
 import dev.sgd.currencymate.domain.error.common.BadRequestException;
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
-import dev.sgd.currencymate.rest.api.model.ErrorResponse;
+import dev.sgd.currencymate.rest.api.model.error.ErrorResponse;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.ErrorEnum;
 import jakarta.validation.ConstraintViolationException;

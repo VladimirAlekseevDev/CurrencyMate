@@ -1,9 +1,9 @@
-package dev.sgd.currencymate.domain.model;
+package dev.sgd.currencymate.rest.api.model.response;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
+import dev.sgd.currencymate.rest.api.model.CurrencyDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,20 +13,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TimeSeries {
+public class ExchangeRateResponse {
 
-    private String info;
+    private CurrencyDto from;
 
-    private Currency from;
-
-    private Currency to;
+    private CurrencyDto to;
 
     private String providerName;
+
+    private BigDecimal rate;
 
     private OffsetDateTime lastRefreshed;
 
     private OffsetDateTime receivedAt;
-
-    private Map<LocalDate, TimeSeriesExchangeRate> exchangeRateTimeSeries;
 
 }

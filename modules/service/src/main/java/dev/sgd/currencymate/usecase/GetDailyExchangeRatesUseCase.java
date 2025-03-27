@@ -1,9 +1,7 @@
 package dev.sgd.currencymate.usecase;
 
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
-import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.TimeSeries;
-import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import dev.sgd.currencymate.provider.ExchangeRateProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

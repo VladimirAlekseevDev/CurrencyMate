@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.rest.api.model;
+package dev.sgd.currencymate.rest.api.model.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
