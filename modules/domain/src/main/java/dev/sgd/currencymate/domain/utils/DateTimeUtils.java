@@ -1,8 +1,9 @@
 package dev.sgd.currencymate.domain.utils;
 
+import lombok.NoArgsConstructor;
+
 import java.time.*;
 import java.time.temporal.ChronoUnit;
-import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public final class DateTimeUtils {

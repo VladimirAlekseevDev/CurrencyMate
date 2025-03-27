@@ -3,6 +3,7 @@ package dev.sgd.currencymate.adapteralphavantage.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.sgd.currencymate.adapteralphavantage.model.ErrorResponse;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
+import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.slf4j.Logger;
@@ -48,13 +49,7 @@ public class AlphavantageFeignErrorDecoder implements ErrorDecoder {
         if (httpStatus.is4xxClientError()) {
             return new AdapterException();
         } else {
-            return new feign.RetryableException(
-                    response.status(),
-                    "Error calling Alphavantage API",
-                    response.request().httpMethod(),
-                    (Long) null,
-                    response.request()
-            );
+            return new ExternalServiceException();
         }
     }
 

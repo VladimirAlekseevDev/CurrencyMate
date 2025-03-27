@@ -5,13 +5,9 @@ import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateR
 import dev.sgd.currencymate.adapteralphavantage.model.timeseries.DailyExchangeRateResponse;
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
+import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.util.Optional;
-
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,8 +18,12 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
 import org.springframework.stereotype.Component;
 
-import static dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper.EXCHANGE_RATE_MAPPER;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.util.Optional;
+
 import static dev.sgd.currencymate.adapteralphavantage.mapper.DailyExchangeRateResponseMapper.DAILY_EXCHANGE_RATE_RESPONSE_MAPPER;
+import static dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper.EXCHANGE_RATE_MAPPER;
 
 @Component
 public class AlphavantageAdapterImpl implements AlphavantageAdapter {
@@ -49,10 +49,10 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
 
     @Override
     @Retryable(
-        retryFor = { feign.RetryableException.class,
-                ConnectException.class,
-                SocketTimeoutException.class,
-                FeignException.InternalServerError.class },
+        retryFor = { ExternalServiceException.class,
+                     ConnectException.class,
+                     SocketTimeoutException.class,
+                     FeignException.InternalServerError.class },
         noRetryFor = { AdapterException.class },
         maxAttemptsExpression = "${app.adapter.alphavantage.retryMaxAttempts}",
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
@@ -68,7 +68,7 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
 
     @Override
     @Retryable(
-        retryFor = { feign.RetryableException.class,
+        retryFor = { ExternalServiceException.class,
                      ConnectException.class,
                      SocketTimeoutException.class,
                      FeignException.InternalServerError.class },

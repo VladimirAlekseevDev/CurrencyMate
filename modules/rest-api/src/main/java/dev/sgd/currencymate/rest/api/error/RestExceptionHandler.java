@@ -1,12 +1,10 @@
 package dev.sgd.currencymate.rest.api.error;
 
-import static dev.sgd.currencymate.domain.error.ErrorEnum.REQUEST_VALIDATION_ERROR;
-
+import dev.sgd.currencymate.domain.error.ErrorEnum;
+import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.common.BadRequestException;
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
 import dev.sgd.currencymate.rest.api.model.error.ErrorResponse;
-import dev.sgd.currencymate.domain.error.common.AdapterException;
-import dev.sgd.currencymate.domain.error.ErrorEnum;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+
+import static dev.sgd.currencymate.domain.error.ErrorEnum.REQUEST_VALIDATION_ERROR;
 
 @ControllerAdvice
 public class RestExceptionHandler {

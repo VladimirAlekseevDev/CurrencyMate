@@ -2,8 +2,8 @@ package dev.sgd.currencymate.rest.api.controller;
 
 import dev.sgd.currencymate.rest.api.model.response.DailyExchangeRateResponse;
 import dev.sgd.currencymate.rest.api.model.response.ExchangeRateResponse;
-import dev.sgd.currencymate.usecase.GetDailyExchangeRatesUseCase;
 import dev.sgd.currencymate.usecase.GetCurrentExchangeRateUseCase;
+import dev.sgd.currencymate.usecase.GetDailyExchangeRatesUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,12 @@
 package dev.sgd.currencymate.adapteralphavantage.mapper;
 
 import dev.sgd.currencymate.domain.utils.DateTimeUtils;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface DateTimeMapper {
