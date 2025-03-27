@@ -34,7 +34,7 @@ public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
     public boolean canProvideCurrentExchangeRate(String fromCurrency, String toCurrency) {
-        return true;
+        return alphavantageAdapter.canProvideCurrentExchangeRate(fromCurrency, toCurrency);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
     public boolean canProvideDailyExchangeRate(String fromCurrency, String toCurrency) {
-        return true;
+        return alphavantageAdapter.canProvideDailyExchangeRate(fromCurrency, toCurrency);
     }
 
     @Override

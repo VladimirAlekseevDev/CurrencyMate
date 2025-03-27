@@ -28,7 +28,7 @@ public class DailyExchangeRateMetadataDto {
     private String outputSize;
 
     @JsonProperty("5. Last Refreshed")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate lastRefreshed;
 
     @JsonProperty("6. Time Zone")

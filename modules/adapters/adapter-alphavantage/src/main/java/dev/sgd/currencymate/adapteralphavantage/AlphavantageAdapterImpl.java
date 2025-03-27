@@ -65,7 +65,7 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
     )
     public ExchangeRate getExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
-        logger.info("Getting exchange rate from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}",
+        logger.info("Getting exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
             SERVICE_NAME, fromCurrencyCode, toCurrencyCode, getRetryCount());
 
         ExchangeRateResponse response = client.getExchangeRate("CURRENCY_EXCHANGE_RATE", fromCurrencyCode, toCurrencyCode, apiKey);
@@ -113,13 +113,16 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
     )
     public ExchangeRateDaily getExchangeRateDaily(String fromCurrencyCode, String toCurrencyCode) {
-        logger.info("Getting exchange rate daily from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}",
+        logger.info("Getting exchange rate daily from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
             SERVICE_NAME, fromCurrencyCode, toCurrencyCode, getRetryCount());
 
         DailyExchangeRateResponse response = client.getExchangeRateDaily(
                 "FX_DAILY", fromCurrencyCode, toCurrencyCode, EXCHANGE_RATE_DAILY_OUTPUT_SIZE_COMPACT, apiKey);
 
-        return DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response);
+        Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
+        Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
+
+        return DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response, fromCurrency, toCurrency);
     }
 
     @Override

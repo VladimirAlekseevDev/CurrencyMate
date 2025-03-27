@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class FindExchangeRateProviderException extends RuntimeException {
 
     public ErrorEnum getError() {
-        return ErrorEnum.FIND_EXCHANGE_RATE_PROVER_ERROR;
+        return ErrorEnum.FIND_EXCHANGE_RATE_PROVIDER_ERROR;
     }
 
 }
