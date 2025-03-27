@@ -1,6 +1,6 @@
 package dev.sgd.currencymate.rest.api.mapper;
 
-import dev.sgd.currencymate.domain.model.TimeSeries;
+import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
 import dev.sgd.currencymate.rest.api.config.DefaultMapperConfig;
 import dev.sgd.currencymate.rest.api.model.response.DailyExchangeRateResponse;
 import org.mapstruct.Mapper;
@@ -12,6 +12,6 @@ public interface DailyExchangeRateMapper {
 
     DailyExchangeRateMapper DAILY_EXCHANGE_RATE_MAPPER = Mappers.getMapper(DailyExchangeRateMapper.class);
 
-    DailyExchangeRateResponse toApi(TimeSeries domain);
+    DailyExchangeRateResponse toApi(ExchangeRateDaily domain);
 
 }

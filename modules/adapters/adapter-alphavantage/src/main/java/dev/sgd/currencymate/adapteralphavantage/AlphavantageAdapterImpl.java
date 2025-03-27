@@ -6,7 +6,7 @@ import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDaily
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.domain.model.TimeSeries;
+import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,7 +63,7 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
     }
 
     @Override
-    public TimeSeries getExchangeRateDaily(String fromCurrency, String toCurrency) {
+    public ExchangeRateDaily getExchangeRateDaily(String fromCurrency, String toCurrency) {
         try {
             logger.info(
                 "Getting exchange rate daily from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}",

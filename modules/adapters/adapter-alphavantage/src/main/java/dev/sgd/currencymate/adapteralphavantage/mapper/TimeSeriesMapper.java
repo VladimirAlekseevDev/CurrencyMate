@@ -1,7 +1,7 @@
 package dev.sgd.currencymate.adapteralphavantage.mapper;
 
 import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
-import dev.sgd.currencymate.domain.model.TimeSeries;
+import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -20,6 +20,6 @@ public interface TimeSeriesMapper {
         expression = "java(DateTimeMapper.INSTANCE.mapToOffsetDateTime(api.getMetadata().getLastRefreshed(), api.getMetadata().getTimeZone()))")
     @Mapping(target = "receivedAt", expression = "java(dev.sgd.currencymate.domain.utils.DateTimeUtils.getCurrentOffsetDateTime())")
     @Mapping(target = "exchangeRateTimeSeries", source = "timeSeries")
-    TimeSeries toDomain(TimeSeriesDailyResponse api);
+    ExchangeRateDaily toDomain(TimeSeriesDailyResponse api);
 
 }
