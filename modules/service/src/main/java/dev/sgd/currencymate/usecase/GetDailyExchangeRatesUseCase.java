@@ -13,8 +13,6 @@ import java.util.List;
 @Service
 public class GetDailyExchangeRatesUseCase {
 
-    private static final String LOG_PREFIX = GetDailyExchangeRatesUseCase.class.getSimpleName() + ":";
-
     private final List<ExchangeRateProvider> exchangeRateProviders;
 
     public GetDailyExchangeRatesUseCase(List<ExchangeRateProvider> exchangeRateProviders) {
@@ -22,15 +20,15 @@ public class GetDailyExchangeRatesUseCase {
     }
 
     public ExchangeRateDaily getDailyExchangeRate(String fromCurrency, String toCurrency) {
-        log.info("{} Getting daily exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
-                LOG_PREFIX, fromCurrency, toCurrency);
+        log.info("Getting daily exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
+                fromCurrency, toCurrency);
 
         List<ExchangeRateProvider> suitableProviders = getSuitableProviders(fromCurrency, toCurrency);
 
         ExchangeRateDaily exchangeRateDaily = getExchangeRateDaily(suitableProviders, fromCurrency, toCurrency);
 
-        log.info("{} Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeries: {}",
-                LOG_PREFIX, fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily);
+        log.info("Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeries: {}",
+                fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily);
 
         return exchangeRateDaily;
     }
@@ -41,8 +39,8 @@ public class GetDailyExchangeRatesUseCase {
                 .toList();
 
         if (suitableProviders.isEmpty()) {
-            log.error("{} No exchange rate provider found for getDailyExchangeRate method, fromCurrency: {}, toCurrency: {}",
-                    LOG_PREFIX, fromCurrency, toCurrency);
+            log.error("No exchange rate provider found for getDailyExchangeRate method, fromCurrency: {}, toCurrency: {}",
+                    fromCurrency, toCurrency);
 
             throw new FindExchangeRateProviderException();
         }
@@ -69,13 +67,13 @@ public class GetDailyExchangeRatesUseCase {
                     .toList();
 
             if (lastException != null) {
-                log.error("{} Error getting daily exchange rate from providers {}, last exception: {}",
-                        LOG_PREFIX, suitableProvidersNames, lastException.getMessage());
+                log.error("Error getting daily exchange rate from providers {}, last exception: {}",
+                        suitableProvidersNames, lastException.getMessage());
 
                 throw lastException;
             } else {
-                log.error("{} Error getting daily exchange rate from providers {}, no exception received",
-                        LOG_PREFIX, suitableProvidersNames);
+                log.error("Error getting daily exchange rate from providers {}, no exception received",
+                        suitableProvidersNames);
 
                 throw new FindExchangeRateProviderException();
             }

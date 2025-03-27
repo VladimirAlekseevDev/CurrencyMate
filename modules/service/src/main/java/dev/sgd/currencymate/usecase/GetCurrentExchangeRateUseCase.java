@@ -15,20 +15,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetCurrentExchangeRateUseCase {
 
-    private static final String LOG_PREFIX = GetCurrentExchangeRateUseCase.class.getSimpleName() + ":";
-
     private final List<ExchangeRateProvider> exchangeRateProviders;
 
     public ExchangeRate getCurrentExchangeRate(String fromCurrency, String toCurrency) {
-        log.info("{} Getting current exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
-                LOG_PREFIX, fromCurrency, toCurrency);
+        log.info("Getting current exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
+                fromCurrency, toCurrency);
 
         List<ExchangeRateProvider> suitableProviders = getSuitableProviders(fromCurrency, toCurrency);
 
         ExchangeRate exchangeRate = getExchangeRate(suitableProviders, fromCurrency, toCurrency);
 
-        log.info("{} Got current exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, exchangeRate: {}",
-                LOG_PREFIX, fromCurrency, toCurrency, exchangeRate.getProviderName(), exchangeRate);
+        log.info("Got current exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, exchangeRate: {}",
+                fromCurrency, toCurrency, exchangeRate.getProviderName(), exchangeRate);
 
         return exchangeRate;
     }
@@ -39,8 +37,8 @@ public class GetCurrentExchangeRateUseCase {
                 .toList();
 
         if (suitableProviders.isEmpty()) {
-            log.error("{} No exchange rate provider found for getCurrentExchangeRate method, fromCurrency: {}, toCurrency: {}",
-                    LOG_PREFIX, fromCurrency, toCurrency);
+            log.error("No exchange rate provider found for getCurrentExchangeRate method, fromCurrency: {}, toCurrency: {}",
+                    fromCurrency, toCurrency);
 
             throw new FindExchangeRateProviderException();
         }
@@ -67,13 +65,13 @@ public class GetCurrentExchangeRateUseCase {
                     .toList();
 
             if (lastException != null) {
-                log.error("{} Error getting exchange rate from providers {}, last exception: {}",
-                        LOG_PREFIX, suitableProvidersNames, lastException.getMessage());
+                log.error("Error getting exchange rate from providers {}, last exception: {}",
+                        suitableProvidersNames, lastException.getMessage());
 
                 throw lastException;
             } else {
-                log.error("{} Error getting exchange rate from providers {}, no exception received",
-                        LOG_PREFIX, suitableProvidersNames);
+                log.error("Error getting exchange rate from providers {}, no exception received",
+                        suitableProvidersNames);
 
                 throw new FindExchangeRateProviderException();
             }

@@ -14,8 +14,10 @@ public interface DailyExchangeRateResponseMapper {
     @Mapping(target = "info", source = "metadata.information")
     @Mapping(target = "from.code", source = "metadata.fromSymbol")
     @Mapping(target = "from.name", ignore = true)
+    @Mapping(target = "from.type", ignore = true)
     @Mapping(target = "to.code", source = "metadata.toSymbol")
     @Mapping(target = "to.name", ignore = true)
+    @Mapping(target = "to.type", ignore = true)
     @Mapping(target = "lastRefreshed",
         expression = "java(DateTimeMapper.INSTANCE.mapToOffsetDateTime(api.getMetadata().getLastRefreshed(), api.getMetadata().getTimeZone()))")
     @Mapping(target = "receivedAt", expression = "java(dev.sgd.currencymate.domain.utils.DateTimeUtils.getCurrentOffsetDateTime())")

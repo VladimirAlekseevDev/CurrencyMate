@@ -13,8 +13,10 @@ public interface ExchangeRateMapper {
 
     @Mapping(target = "from.code", source = "exchangeRate.fromCurrencyCode")
     @Mapping(target = "from.name", source = "exchangeRate.fromCurrencyName")
+    @Mapping(target = "from.type", ignore = true)
     @Mapping(target = "to.code", source = "exchangeRate.toCurrencyCode")
     @Mapping(target = "to.name", source = "exchangeRate.toCurrencyName")
+    @Mapping(target = "to.type", ignore = true)
     @Mapping(target = "rate", source = "exchangeRate.exchangeRate")
     @Mapping(target = "lastRefreshed",
         expression = "java(DateTimeMapper.INSTANCE.mapToOffsetDateTime(api.getExchangeRate().getLastRefreshed(), api.getExchangeRate().getTimeZone()))")

@@ -1,6 +1,7 @@
-package dev.sgd.currencymate.adapteralphavantage;
+package dev.sgd.currencymate.adapteralphavantage.currency;
 
 import com.opencsv.CSVReader;
+import dev.sgd.currencymate.domain.enums.CurrencyType;
 import dev.sgd.currencymate.domain.error.common.InternalException;
 import dev.sgd.currencymate.domain.model.Currency;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -23,7 +25,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Getter
 @Component
 @RequiredArgsConstructor
-public class CurrencyHandler {
+public class AlphavantageCurrencyHandler {
 
     private static final String FIAT_CURRENCIES_CSV_PATH = "physical_currency_list.csv";
     private static final String CRYPTO_CURRENCIES_CSV_PATH = "digital_currency_list.csv";
@@ -31,17 +33,31 @@ public class CurrencyHandler {
     private List<Currency> fiatCurrencies;
     private List<Currency> cryptoCurrencies;
 
+    public Optional<Currency> getCurrencyByCode(String currencyCode) {
+        Optional<Currency> fiatCurrencyOptional = fiatCurrencies.stream()
+                .filter(currency -> currency.getCode().equals(currencyCode))
+                .findFirst();
+
+        if (fiatCurrencyOptional.isPresent()) {
+            return fiatCurrencyOptional;
+        }
+
+        return cryptoCurrencies.stream()
+                .filter(currency -> currency.getCode().equals(currencyCode))
+                .findFirst();
+    }
+
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesFromCsv() {
-        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH);
-        cryptoCurrencies = loadCurrenciesFromCSV(CRYPTO_CURRENCIES_CSV_PATH);
+        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH, CurrencyType.FIAT);
+        cryptoCurrencies = loadCurrenciesFromCSV(CRYPTO_CURRENCIES_CSV_PATH, CurrencyType.CRYPTO);
 
         log.info("Loaded {} fiat currencies and {} crypto currencies from CSV files",
                 fiatCurrencies.size(), cryptoCurrencies.size());
     }
 
-    private List<Currency> loadCurrenciesFromCSV(String filePath) {
-        log.info("Loading Alphavantage currencies from CSV file: {}", filePath);
+    private List<Currency> loadCurrenciesFromCSV(String filePath, CurrencyType currencyType) {
+        log.info("Loading Alphavantage {} currencies from CSV file: {}", currencyType, filePath);
 
         List<Currency> currencies = new ArrayList<>(100);
         Resource fiatCurrencyResource = new ClassPathResource(filePath);
@@ -67,15 +83,15 @@ public class CurrencyHandler {
                             String.join(",", nextRecord));
                     continue;
                 }
-                currencies.add(new Currency(code, name));
+                currencies.add(new Currency(code, name, currencyType));
             }
 
-            log.info("Read {} currencies from CSV file: {}", currencies.size(), filePath);
+            log.info("Read {} {} currencies from CSV file: {}", currencies.size(), currencyType, filePath);
 
             return currencies;
         } catch (Exception e) {
-            log.error("Error loading Alphavantage currencies from CSV file: {}, message: {}",
-                    filePath, e.getMessage(), e);
+            log.error("Error loading Alphavantage {} currencies from CSV file: {}, message: {}",
+                    currencyType, filePath, e.getMessage(), e);
 
             throw new InternalException();
         }

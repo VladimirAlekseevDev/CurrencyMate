@@ -15,20 +15,19 @@ import static dev.sgd.currencymate.provider.ExchangeRateProviderEnum.ALPHAVANTAG
 @RequiredArgsConstructor
 public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
 
-    private static final String LOG_PREFIX = ALPHAVANTAGE_PROVIDER.getName() + ":";
 
     private final AlphavantageAdapter alphavantageAdapter;
 
     @Override
     public ExchangeRate getCurrentExchangeRate(String fromCurrency, String toCurrency) {
-        log.info("{} Getting exchange rate fromCurrency: {}, toCurrency: {}",
-                LOG_PREFIX, fromCurrency, toCurrency);
+        log.info("Getting exchange rate fromCurrency: {}, toCurrency: {}",
+                fromCurrency, toCurrency);
 
         ExchangeRate exchangeRate = alphavantageAdapter.getExchangeRate(fromCurrency, toCurrency);
         exchangeRate.setProviderName(ALPHAVANTAGE_PROVIDER.getName());
 
-        log.info("{} Got exchange rate fromCurrency: {}, toCurrency: {}, exchangeRate: {}",
-                LOG_PREFIX, fromCurrency, toCurrency, exchangeRate);
+        log.info("Got exchange rate fromCurrency: {}, toCurrency: {}, exchangeRate: {}",
+                fromCurrency, toCurrency, exchangeRate);
 
         return exchangeRate;
     }
@@ -40,14 +39,14 @@ public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
     public ExchangeRateDaily getDailyExchangeRate(String fromCurrency, String toCurrency) {
-        log.info("{} Getting daily exchange rate fromCurrency: {}, toCurrency: {}",
-                LOG_PREFIX, fromCurrency, toCurrency);
+        log.info("Getting daily exchange rate fromCurrency: {}, toCurrency: {}",
+                fromCurrency, toCurrency);
 
         ExchangeRateDaily exchangeRateDaily = alphavantageAdapter.getExchangeRateDaily(fromCurrency, toCurrency);
         exchangeRateDaily.setProviderName(ALPHAVANTAGE_PROVIDER.getName());
 
-        log.info("{} Got daily exchange rate fromCurrency: {}, toCurrency: {}, timeSeriesCount: {}",
-                LOG_PREFIX, fromCurrency, toCurrency, exchangeRateDaily.getExchangeRateTimeSeries().size());
+        log.info("Got daily exchange rate fromCurrency: {}, toCurrency: {}, timeSeriesCount: {}",
+                fromCurrency, toCurrency, exchangeRateDaily.getExchangeRateTimeSeries().size());
 
         return exchangeRateDaily;
     }

@@ -6,17 +6,30 @@ import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
 
 public interface AlphavantageAdapter {
 
+    ExchangeRate getExchangeRate(String fromCurrencyCode, String toCurrencyCode) throws AdapterException;
+
     /**
      * Works fine:
-     * FIAT (USD/EUR) -> FIAT (EUR/CNH/INR/JPY/TRY/THB/GEL/KZT/AMD/AZN)
+     * FIAT (USD/EUR) -> FIAT (USD/EUR/CNH/INR/JPY/TRY/THB/GEL/KZT/AMD/AZN)
      * CRYPTO (BTC/ETH) -> FIAT (USD/EUR)
-     * Errors: TODO - handle
-     * USD -> RUB
-     * TON -> FIAT (because no TON in crypto currencies)
-     * CRYPTO -> RUB/GEL
+     * Errors:
+     * FIAT -> CRYPTO
+     * CRYPTO -> CRYPTO
+     * Special cases:
+     * RUB currency code does not work in this methis
      */
-    ExchangeRate getExchangeRate(String fromCurrency, String toCurrency) throws AdapterException;
+    boolean canProvideCurrentExchangeRate(String fromCurrencyCode, String toCurrencyCode);
 
-    ExchangeRateDaily getExchangeRateDaily(String fromCurrency, String toCurrency) throws AdapterException;
+    ExchangeRateDaily getExchangeRateDaily(String fromCurrencyCode, String toCurrencyCode) throws AdapterException;
+
+    /**
+     * Works fine:
+     * FIAT (USD/EUR) -> FIAT (!RUB!/USD/EUR/CNH/INR/JPY/TRY/THB/GEL/KZT/AMD/AZN)
+     * Errors:
+     * CRYPTO -> CRYPTO
+     * FIAT -> CRYPTO
+     * CRYPTO -> FIAT
+     */
+    boolean canProvideDailyExchangeRate(String fromCurrencyCode, String toCurrencyCode);
 
 }
