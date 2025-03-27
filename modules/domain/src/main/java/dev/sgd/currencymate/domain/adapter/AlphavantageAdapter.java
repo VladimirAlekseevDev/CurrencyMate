@@ -1,12 +1,12 @@
 package dev.sgd.currencymate.domain.adapter;
 
-import dev.sgd.currencymate.domain.error.common.AdapterException;
+import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
+import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 
 public interface AlphavantageAdapter {
 
-    ExchangeRate getExchangeRate(String fromCurrencyCode, String toCurrencyCode) throws AdapterException;
+    ExchangeRate getExchangeRate(String fromCurrencyCode, String toCurrencyCode);
 
     /**
      * Works fine:
@@ -20,7 +20,7 @@ public interface AlphavantageAdapter {
      */
     boolean canProvideCurrentExchangeRate(String fromCurrencyCode, String toCurrencyCode);
 
-    ExchangeRateDaily getExchangeRateDaily(String fromCurrencyCode, String toCurrencyCode) throws AdapterException;
+    DailyExchangeRate getDailyExchangeRate(String fromCurrencyCode, String toCurrencyCode);
 
     /**
      * Works fine:
@@ -31,5 +31,9 @@ public interface AlphavantageAdapter {
      * CRYPTO -> FIAT
      */
     boolean canProvideDailyExchangeRate(String fromCurrencyCode, String toCurrencyCode);
+
+    WeeklyExchangeRate getWeeklyExchangeRate(String fromCurrencyCode, String toCurrencyCode);
+
+    boolean canProvideWeeklyExchangeRate(String fromCurrencyCode, String toCurrencyCode);
 
 }

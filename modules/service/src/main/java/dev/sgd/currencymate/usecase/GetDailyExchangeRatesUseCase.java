@@ -1,7 +1,7 @@
 package dev.sgd.currencymate.usecase;
 
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
-import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
+import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.provider.ExchangeRateProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,18 +19,18 @@ public class GetDailyExchangeRatesUseCase {
         this.exchangeRateProviders = exchangeRateProviders;
     }
 
-    public ExchangeRateDaily getDailyExchangeRate(String fromCurrency, String toCurrency) {
+    public DailyExchangeRate getDailyExchangeRate(String fromCurrency, String toCurrency) {
         log.info("Getting daily exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
                 fromCurrency, toCurrency);
 
         List<ExchangeRateProvider> suitableProviders = getSuitableProviders(fromCurrency, toCurrency);
 
-        ExchangeRateDaily exchangeRateDaily = getExchangeRateDaily(suitableProviders, fromCurrency, toCurrency);
+        DailyExchangeRate dailyExchangeRate = getExchangeRateDaily(suitableProviders, fromCurrency, toCurrency);
 
         log.info("Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeriesCount: {}",
-                fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily.getExchangeRateTimeSeries().size());
+                fromCurrency, toCurrency, dailyExchangeRate.getProviderName(), dailyExchangeRate.getExchangeRateTimeSeries().size());
 
-        return exchangeRateDaily;
+        return dailyExchangeRate;
     }
 
     private List<ExchangeRateProvider> getSuitableProviders(String fromCurrency, String toCurrency) {
@@ -48,20 +48,20 @@ public class GetDailyExchangeRatesUseCase {
         return suitableProviders;
     }
 
-    private ExchangeRateDaily getExchangeRateDaily(List<ExchangeRateProvider> suitableProviders, String fromCurrency, String toCurrency) {
-        ExchangeRateDaily exchangeRateDaily = null;
+    private DailyExchangeRate getExchangeRateDaily(List<ExchangeRateProvider> suitableProviders, String fromCurrency, String toCurrency) {
+        DailyExchangeRate dailyExchangeRate = null;
         RuntimeException lastException = null;
         Iterator<ExchangeRateProvider> providerIterator = suitableProviders.iterator();
 
         do {
             try {
-                exchangeRateDaily = providerIterator.next().getDailyExchangeRate(fromCurrency, toCurrency);
+                dailyExchangeRate = providerIterator.next().getDailyExchangeRate(fromCurrency, toCurrency);
             } catch (RuntimeException e) {
                 lastException = e;
             }
-        } while (exchangeRateDaily == null && providerIterator.hasNext());
+        } while (dailyExchangeRate == null && providerIterator.hasNext());
 
-        if (exchangeRateDaily == null) {
+        if (dailyExchangeRate == null) {
             List<String> suitableProvidersNames = suitableProviders.stream()
                     .map(p -> p.getClass().getSimpleName())
                     .toList();
@@ -79,7 +79,7 @@ public class GetDailyExchangeRatesUseCase {
             }
         }
 
-        return exchangeRateDaily;
+        return dailyExchangeRate;
     }
 
 }

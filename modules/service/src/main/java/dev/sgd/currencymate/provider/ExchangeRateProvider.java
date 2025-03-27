@@ -1,7 +1,7 @@
 package dev.sgd.currencymate.provider;
 
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
+import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import org.springframework.core.Ordered;
 
 /**
@@ -32,7 +32,7 @@ public interface ExchangeRateProvider extends Ordered {
      * @param toCurrency currency to get exchange rate to
      * @return exchange rate daily
      */
-    ExchangeRateDaily getDailyExchangeRate(String fromCurrency, String toCurrency);
+    DailyExchangeRate getDailyExchangeRate(String fromCurrency, String toCurrency);
 
     /**
      * Check if provider can provide daily exchange rate for given currencies

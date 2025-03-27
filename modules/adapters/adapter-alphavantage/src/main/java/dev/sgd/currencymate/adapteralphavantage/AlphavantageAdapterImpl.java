@@ -3,14 +3,16 @@ package dev.sgd.currencymate.adapteralphavantage;
 import dev.sgd.currencymate.adapteralphavantage.client.AlphavantageClient;
 import dev.sgd.currencymate.adapteralphavantage.currency.AlphavantageCurrencyHandler;
 import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
-import dev.sgd.currencymate.adapteralphavantage.model.timeseries.DailyExchangeRateResponse;
+import dev.sgd.currencymate.adapteralphavantage.model.daily.DailyExchangeRateResponse;
+import dev.sgd.currencymate.adapteralphavantage.model.weekly.WeeklyExchangeRateResponse;
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
 import dev.sgd.currencymate.domain.enums.CurrencyType;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
 import dev.sgd.currencymate.domain.model.Currency;
+import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
+import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +30,7 @@ import java.util.Optional;
 import static dev.sgd.currencymate.adapteralphavantage.currency.CurrencyCodeEnum.*;
 import static dev.sgd.currencymate.adapteralphavantage.mapper.DailyExchangeRateResponseMapper.DAILY_EXCHANGE_RATE_RESPONSE_MAPPER;
 import static dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper.EXCHANGE_RATE_MAPPER;
+import static dev.sgd.currencymate.adapteralphavantage.mapper.WeeklyExchangeRateResponseMapper.WEEKLY_EXCHANGE_RATE_RESPONSE_MAPPER;
 import static dev.sgd.currencymate.domain.enums.CurrencyType.CRYPTO;
 import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
 
@@ -37,7 +40,6 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
     private static final String SERVICE_NAME = "alphavantage";
 
     private static final String EXCHANGE_RATE_DAILY_OUTPUT_SIZE_COMPACT = "compact";
-    private static final String EXCHANGE_RATE_DAILY_OUTPUT_SIZE_FULL = "full";
 
     private final AlphavantageClient client;
     private final AlphavantageCurrencyHandler currencyHandler;
@@ -112,20 +114,20 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         maxAttemptsExpression = "${app.adapter.alphavantage.retryMaxAttempts}",
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
     )
-    public ExchangeRateDaily getExchangeRateDaily(String fromCurrencyCode, String toCurrencyCode) {
-        logger.info("Getting exchange rate daily from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
+    public DailyExchangeRate getDailyExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
+        logger.info("Getting daily exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
             SERVICE_NAME, fromCurrencyCode, toCurrencyCode, getRetryCount());
 
-        DailyExchangeRateResponse response = client.getExchangeRateDaily(
+        DailyExchangeRateResponse response = client.getDailyExchangeRate(
                 "FX_DAILY", fromCurrencyCode, toCurrencyCode, EXCHANGE_RATE_DAILY_OUTPUT_SIZE_COMPACT, apiKey);
 
         Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
         Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
 
-        ExchangeRateDaily exchangeRateDaily = DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response);
-        DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.setCurrenciesNameAndType(exchangeRateDaily, fromCurrency, toCurrency);
+        DailyExchangeRate dailyExchangeRate = DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response);
+        DAILY_EXCHANGE_RATE_RESPONSE_MAPPER.setCurrenciesNameAndType(dailyExchangeRate, fromCurrency, toCurrency);
 
-        return exchangeRateDaily;
+        return dailyExchangeRate;
     }
 
     @Override
@@ -149,6 +151,37 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         }
 
         return true;
+    }
+
+    @Override
+    @Retryable(
+        retryFor = { ExternalServiceException.class,
+                     ConnectException.class,
+                     SocketTimeoutException.class,
+                     FeignException.InternalServerError.class },
+        noRetryFor = { AdapterException.class },
+        maxAttemptsExpression = "${app.adapter.alphavantage.retryMaxAttempts}",
+        backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
+    )
+    public WeeklyExchangeRate getWeeklyExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
+        logger.info("Getting weekly exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
+                SERVICE_NAME, fromCurrencyCode, toCurrencyCode, getRetryCount());
+
+        WeeklyExchangeRateResponse response = client.getWeeklyExchangeRate(
+                "FX_WEEKLY", fromCurrencyCode, toCurrencyCode, apiKey);
+
+        Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
+        Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
+
+        WeeklyExchangeRate weeklyExchangeRate = WEEKLY_EXCHANGE_RATE_RESPONSE_MAPPER.toDomain(response);
+        WEEKLY_EXCHANGE_RATE_RESPONSE_MAPPER.setCurrenciesNameAndType(weeklyExchangeRate, fromCurrency, toCurrency);
+
+        return weeklyExchangeRate;
+    }
+
+    @Override
+    public boolean canProvideWeeklyExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
+        return canProvideDailyExchangeRate(fromCurrencyCode, toCurrencyCode);
     }
 
     private boolean typesEquals(CurrencyType fromType, CurrencyType fromTypeExpected, CurrencyType toType, CurrencyType toTypeExpected) {

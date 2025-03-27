@@ -1,6 +1,7 @@
-package dev.sgd.currencymate.adapteralphavantage.model.timeseries;
+package dev.sgd.currencymate.adapteralphavantage.model.daily;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.sgd.currencymate.adapteralphavantage.model.ExchangeRateValuesDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class DailyExchangeRateResponse {
     private DailyExchangeRateMetadataDto metadata;
 
     @JsonProperty("Time Series FX (Daily)")
-    private Map<LocalDate, DailyExchangeRateValuesDto> timeSeries;
+    private Map<LocalDate, ExchangeRateValuesDto> timeSeries;
 
 
 }

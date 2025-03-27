@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExchangeRateDaily {
+public class DailyExchangeRate {
 
     private String info;
 
@@ -25,6 +25,6 @@ public class ExchangeRateDaily {
 
     private OffsetDateTime receivedAt;
 
-    private Map<LocalDate, DailyExchangeRateValues> exchangeRateTimeSeries;
+    private Map<LocalDate, ExchangeRateValues> exchangeRateTimeSeries;
 
 }

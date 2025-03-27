@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.adapteralphavantage.model.timeseries;
+package dev.sgd.currencymate.adapteralphavantage.model.daily;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,7 +28,7 @@ public class DailyExchangeRateMetadataDto {
     private String outputSize;
 
     @JsonProperty("5. Last Refreshed")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastRefreshed;
 
     @JsonProperty("6. Time Zone")

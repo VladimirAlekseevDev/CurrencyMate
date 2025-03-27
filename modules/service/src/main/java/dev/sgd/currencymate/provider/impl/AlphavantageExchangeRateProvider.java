@@ -1,8 +1,8 @@
 package dev.sgd.currencymate.provider.impl;
 
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
+import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
 import dev.sgd.currencymate.provider.ExchangeRateProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +38,17 @@ public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
     }
 
     @Override
-    public ExchangeRateDaily getDailyExchangeRate(String fromCurrency, String toCurrency) {
+    public DailyExchangeRate getDailyExchangeRate(String fromCurrency, String toCurrency) {
         log.info("Getting daily exchange rate fromCurrency: {}, toCurrency: {}",
                 fromCurrency, toCurrency);
 
-        ExchangeRateDaily exchangeRateDaily = alphavantageAdapter.getExchangeRateDaily(fromCurrency, toCurrency);
-        exchangeRateDaily.setProviderName(ALPHAVANTAGE_PROVIDER.getName());
+        DailyExchangeRate dailyExchangeRate = alphavantageAdapter.getDailyExchangeRate(fromCurrency, toCurrency);
+        dailyExchangeRate.setProviderName(ALPHAVANTAGE_PROVIDER.getName());
 
         log.info("Got daily exchange rate fromCurrency: {}, toCurrency: {}, timeSeriesCount: {}",
-                fromCurrency, toCurrency, exchangeRateDaily.getExchangeRateTimeSeries().size());
+                fromCurrency, toCurrency, dailyExchangeRate.getExchangeRateTimeSeries().size());
 
-        return exchangeRateDaily;
+        return dailyExchangeRate;
     }
 
     @Override
