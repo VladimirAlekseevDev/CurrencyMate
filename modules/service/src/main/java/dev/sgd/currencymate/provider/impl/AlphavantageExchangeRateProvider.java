@@ -25,6 +25,7 @@ public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
                 LOG_PREFIX, fromCurrency, toCurrency);
 
         ExchangeRate exchangeRate = alphavantageAdapter.getExchangeRate(fromCurrency, toCurrency);
+        exchangeRate.setProviderName(ALPHAVANTAGE_PROVIDER.getName());
 
         log.info("{} Got exchange rate fromCurrency: {}, toCurrency: {}, exchangeRate: {}",
                 LOG_PREFIX, fromCurrency, toCurrency, exchangeRate);
@@ -43,6 +44,7 @@ public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
                 LOG_PREFIX, fromCurrency, toCurrency);
 
         ExchangeRateDaily exchangeRateDaily = alphavantageAdapter.getExchangeRateDaily(fromCurrency, toCurrency);
+        exchangeRateDaily.setProviderName(ALPHAVANTAGE_PROVIDER.getName());
 
         log.info("{} Got daily exchange rate fromCurrency: {}, toCurrency: {}, timeSeriesCount: {}",
                 LOG_PREFIX, fromCurrency, toCurrency, exchangeRateDaily.getExchangeRateTimeSeries().size());

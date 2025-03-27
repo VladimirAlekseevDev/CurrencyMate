@@ -3,6 +3,7 @@ package dev.sgd.currencymate.rest.api.error;
 import dev.sgd.currencymate.domain.error.ErrorEnum;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.common.BadRequestException;
+import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
 import dev.sgd.currencymate.rest.api.model.error.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
@@ -39,6 +40,15 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(AdapterException.class)
     public ResponseEntity<ErrorResponse> handleAdapterException(AdapterException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            ex.getError().getMessage(),
+            ex.getError().getCode());
+
+        return ResponseEntity.internalServerError().body(errorResponse);
+    }
+
+    @ExceptionHandler(ExternalServiceException.class)
+    public ResponseEntity<ErrorResponse> handleExternalServiceException(ExternalServiceException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
             ex.getError().getMessage(),
             ex.getError().getCode());

@@ -20,7 +20,7 @@ public interface DailyExchangeRateResponseMapper {
         expression = "java(DateTimeMapper.INSTANCE.mapToOffsetDateTime(api.getMetadata().getLastRefreshed(), api.getMetadata().getTimeZone()))")
     @Mapping(target = "receivedAt", expression = "java(dev.sgd.currencymate.domain.utils.DateTimeUtils.getCurrentOffsetDateTime())")
     @Mapping(target = "exchangeRateTimeSeries", source = "timeSeries")
-    @Mapping(target = "providerName", ignore = true) // TODO
+    @Mapping(target = "providerName", ignore = true)
     ExchangeRateDaily toDomain(DailyExchangeRateResponse api);
 
 }

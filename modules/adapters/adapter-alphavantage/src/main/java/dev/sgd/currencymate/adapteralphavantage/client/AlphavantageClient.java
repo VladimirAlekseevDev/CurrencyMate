@@ -29,13 +29,14 @@ public interface AlphavantageClient {
 
     /**
      * <a href="https://www.alphavantage.co/documentation/#fx-daily">FX Daily API Reference</a>
+     * @param outputSize compact / full
      */
     @GetMapping("/query")
     DailyExchangeRateResponse getExchangeRateDaily(
         @RequestParam("function") String function,
         @RequestParam("from_symbol") String fromSymbol,
         @RequestParam("to_symbol") String toSymbol,
-        @RequestParam("outputsize") String outputSize, // compact (100 points) or full
+        @RequestParam("outputsize") String outputSize,
         @RequestParam("apikey") String apiKey
     );
 
