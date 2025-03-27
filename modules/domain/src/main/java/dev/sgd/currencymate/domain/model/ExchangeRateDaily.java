@@ -27,6 +27,6 @@ public class ExchangeRateDaily {
 
     private OffsetDateTime receivedAt;
 
-    private Map<LocalDate, TimeSeriesExchangeRate> exchangeRateTimeSeries;
+    private Map<LocalDate, DailyExchangeRateValues> exchangeRateTimeSeries;
 
 }

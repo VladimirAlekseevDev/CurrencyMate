@@ -1,15 +1,15 @@
 package dev.sgd.currencymate.adapteralphavantage.mapper;
 
-import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
+import dev.sgd.currencymate.adapteralphavantage.model.timeseries.DailyExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.ExchangeRateDaily;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = { TimeSeriesExchangeRateMapper.class, DateTimeMapper.class})
-public interface TimeSeriesMapper {
+@Mapper(uses = { DailyExchangeRateMapper.class, DateTimeMapper.class})
+public interface DailyExchangeRateResponseMapper {
 
-    TimeSeriesMapper TIME_SERIES_MAPPER = Mappers.getMapper(TimeSeriesMapper.class);
+    DailyExchangeRateResponseMapper DAILY_EXCHANGE_RATE_RESPONSE_MAPPER = Mappers.getMapper(DailyExchangeRateResponseMapper.class);
 
     @Mapping(target = "info", source = "metadata.information")
     @Mapping(target = "from.code", source = "metadata.fromSymbol")
@@ -20,6 +20,7 @@ public interface TimeSeriesMapper {
         expression = "java(DateTimeMapper.INSTANCE.mapToOffsetDateTime(api.getMetadata().getLastRefreshed(), api.getMetadata().getTimeZone()))")
     @Mapping(target = "receivedAt", expression = "java(dev.sgd.currencymate.domain.utils.DateTimeUtils.getCurrentOffsetDateTime())")
     @Mapping(target = "exchangeRateTimeSeries", source = "timeSeries")
-    ExchangeRateDaily toDomain(TimeSeriesDailyResponse api);
+    @Mapping(target = "providerName", ignore = true) // TODO
+    ExchangeRateDaily toDomain(DailyExchangeRateResponse api);
 
 }

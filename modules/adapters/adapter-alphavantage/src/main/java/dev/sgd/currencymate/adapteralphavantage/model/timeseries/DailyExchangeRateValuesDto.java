@@ -2,12 +2,17 @@ package dev.sgd.currencymate.adapteralphavantage.model.timeseries;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
-public class TimeSeriesExchangeRateDto {
+@AllArgsConstructor
+public class DailyExchangeRateValuesDto {
 
     @JsonProperty("1. open")
     private BigDecimal open;

@@ -72,6 +72,7 @@ app:
     alphavantage:
       url: ${EXT_ALPHAVANTAGE_URL:https://www.alphavantage.co}
       apiKey: ${EXT_ALPHAVANTAGE_API_KEY}
-      retry:
-        attempts: ${EXT_ALPHAVANTAGE_RETRY_ATTEMPTS:3}
-        delay: ${EXT_ALPHAVANTAGE_RETRY_DELAY:2000}
+      connectTimeoutMs: ${EXT_ALPHAVANTAGE_CONNECT_TIMEOUT:10000} # ms
+      readTimeoutMs: ${EXT_ALPHAVANTAGE_READ_TIMEOUT:30000} # ms
+      retryMaxAttempts: ${EXT_ALPHAVANTAGE_RETRY_ATTEMPTS:5}
+      retryBackoffDelayMs: ${EXT_ALPHAVANTAGE_RETRY_DELAY:2000} # ms

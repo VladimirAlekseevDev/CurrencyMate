@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public class GetCurrentExchangeRateUseCase {
 
+    private static final String LOG_PREFIX = GetCurrentExchangeRateUseCase.class.getSimpleName() + ":";
+
     private final List<ExchangeRateProvider> exchangeRateProviders;
 
     public GetCurrentExchangeRateUseCase(List<ExchangeRateProvider> exchangeRateProviders) {
@@ -19,20 +21,22 @@ public class GetCurrentExchangeRateUseCase {
     }
 
     public ExchangeRate getCurrentExchangeRate(String fromCurrency, String toCurrency) {
-        log.info("Getting current exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
-                fromCurrency, toCurrency);
+        log.info("{} Getting current exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
+                LOG_PREFIX, fromCurrency, toCurrency);
 
         ExchangeRate exchangeRate = exchangeRateProviders.stream()
                 .filter(provider -> provider.canProvideCurrentExchangeRate(fromCurrency, toCurrency))
                 .findFirst()
                 .map(provider -> provider.getCurrentExchangeRate(fromCurrency, toCurrency))
                 .orElseThrow(() -> {
-                    log.warn("No exchange rate provider found for getCurrentExchangeRate method, fromCurrency: {}, toCurrency: {}", fromCurrency, toCurrency);
+                    log.error("{} No exchange rate provider found for getCurrentExchangeRate method, fromCurrency: {}, toCurrency: {}",
+                            LOG_PREFIX, fromCurrency, toCurrency);
+
                     return new FindExchangeRateProviderException();
                 });
 
-        log.info("Got current exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, exchangeRate: {}",
-                fromCurrency, toCurrency,exchangeRate.getProviderName(), exchangeRate);
+        log.info("{} Got current exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, exchangeRate: {}",
+                LOG_PREFIX, fromCurrency, toCurrency,exchangeRate.getProviderName(), exchangeRate);
 
         return exchangeRate;
     }

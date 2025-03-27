@@ -1,8 +1,9 @@
 package dev.sgd.currencymate.adapteralphavantage.client;
 
 import dev.sgd.currencymate.adapteralphavantage.config.AlphavantageFeignClientConfig;
+import dev.sgd.currencymate.adapteralphavantage.config.AlphavantageFeignErrorDecoder;
 import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
-import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
+import dev.sgd.currencymate.adapteralphavantage.model.timeseries.DailyExchangeRateResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(
     name = "alphavantage-client",
     url = "${app.adapter.alphavantage.url}",
-    configuration = AlphavantageFeignClientConfig.class)
+    configuration = { AlphavantageFeignClientConfig.class, AlphavantageFeignErrorDecoder.class })
 public interface AlphavantageClient {
 
     /**
@@ -30,7 +31,7 @@ public interface AlphavantageClient {
      * <a href="https://www.alphavantage.co/documentation/#fx-daily">FX Daily API Reference</a>
      */
     @GetMapping("/query")
-    TimeSeriesDailyResponse getExchangeRateDaily(
+    DailyExchangeRateResponse getExchangeRateDaily(
         @RequestParam("function") String function,
         @RequestParam("from_symbol") String fromSymbol,
         @RequestParam("to_symbol") String toSymbol,
