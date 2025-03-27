@@ -12,6 +12,8 @@ public class ExchangeRateResponse {
 
     private Currency to;
 
+    private String providerName;
+
     private BigDecimal rate;
 
     private OffsetDateTime lastRefreshed;

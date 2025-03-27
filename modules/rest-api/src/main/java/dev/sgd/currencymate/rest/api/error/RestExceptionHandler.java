@@ -2,8 +2,10 @@ package dev.sgd.currencymate.rest.api.error;
 
 import static dev.sgd.currencymate.domain.error.ErrorEnum.REQUEST_VALIDATION_ERROR;
 
+import dev.sgd.currencymate.domain.error.common.BadRequestException;
+import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
 import dev.sgd.currencymate.rest.api.model.ErrorResponse;
-import dev.sgd.currencymate.domain.error.AdapterException;
+import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.ErrorEnum;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,16 @@ public class RestExceptionHandler {
         return ResponseEntity.internalServerError().body(errorResponse);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse > handleBadRequestException(BadRequestException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getError().getMessage(),
+                ex.getError().getCode()
+        );
+
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
     @ExceptionHandler(AdapterException.class)
     public ResponseEntity<ErrorResponse> handleAdapterException(AdapterException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
@@ -32,6 +44,15 @@ public class RestExceptionHandler {
             ex.getError().getCode());
 
         return ResponseEntity.internalServerError().body(errorResponse);
+    }
+
+    @ExceptionHandler(FindExchangeRateProviderException.class)
+    public ResponseEntity<ErrorResponse> handleFindExchangeRateProviderException(FindExchangeRateProviderException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            ex.getError().getMessage(),
+            ex.getError().getCode());
+
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

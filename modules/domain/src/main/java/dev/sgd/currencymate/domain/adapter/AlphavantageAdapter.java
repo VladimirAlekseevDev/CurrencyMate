@@ -1,6 +1,6 @@
 package dev.sgd.currencymate.domain.adapter;
 
-import dev.sgd.currencymate.domain.error.AdapterException;
+import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.TimeSeries;
 

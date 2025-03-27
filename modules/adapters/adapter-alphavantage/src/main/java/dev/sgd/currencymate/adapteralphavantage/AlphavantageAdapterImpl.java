@@ -6,7 +6,7 @@ import dev.sgd.currencymate.adapteralphavantage.mapper.TimeSeriesMapper;
 import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
-import dev.sgd.currencymate.domain.error.AdapterException;
+import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.TimeSeries;
 import java.util.Optional;
@@ -29,15 +29,15 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
     private static final String EXCHANGE_RATE_DAILY_OUTPUT_SIZE_FULL = "full";
 
     private final AlphavantageClient client;
-    private final Logger logger;
     private final String apiKey;
+    private final Logger logger;
 
     public AlphavantageAdapterImpl(AlphavantageClient client,
-                                   @Qualifier("feignLogger") Logger logger,
-                                   @Value("${app.adapter.alphavantage.apiKey}") String apiKey) {
+                                   @Value("${app.adapter.alphavantage.apiKey}") String apiKey,
+                                   @Qualifier("feignLogger") Logger logger) {
         this.client = client;
-        this.logger = logger;
         this.apiKey = apiKey;
+        this.logger = logger;
     }
 
     @Override

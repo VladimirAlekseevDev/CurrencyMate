@@ -5,9 +5,14 @@ import lombok.Getter;
 @Getter
 public enum ErrorEnum {
 
-    UNKNOWN_ERROR("Unknown error occurred"),
-    ADAPTER_ERROR("Error occurred in adapter"),
-    REQUEST_VALIDATION_ERROR("Request parameters are invalid");
+    /* Common */
+    UNKNOWN_ERROR("Internal exception occurred while performing the operation, please try again later"),
+    REQUEST_VALIDATION_ERROR("Request parameters are not valid, check the API specs"),
+    ADAPTER_ERROR("Exception occurred while calling another service, please try again later"),
+
+    /* More specific */
+    FIND_EXCHANGE_RATE_PROVER_ERROR("We don't yet have a suitable provider for the requested currencies, please try using other currencies"),;
+
 
     private final String message;
     private final String code;

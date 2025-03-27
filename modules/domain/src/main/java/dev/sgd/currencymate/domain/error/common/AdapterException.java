@@ -1,5 +1,6 @@
-package dev.sgd.currencymate.domain.error;
+package dev.sgd.currencymate.domain.error.common;
 
+import dev.sgd.currencymate.domain.error.ErrorEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -3,7 +3,7 @@ package dev.sgd.currencymate.rest.api.controller;
 import dev.sgd.currencymate.rest.api.mapper.ExchangeRateMapper;
 import dev.sgd.currencymate.rest.api.model.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.TimeSeries;
-import dev.sgd.currencymate.service.ExchangeRatesService;
+import dev.sgd.currencymate.usecase.GetExchangeRateUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ExchangeRatesController {
 
-    private final ExchangeRatesService exchangeRatesService;
+    private final GetExchangeRateUseCase getExchangeRateUseCase;
 
-    @GetMapping("/exchangeRate")
-    public ResponseEntity<ExchangeRateResponse> getExchangeRate(
+    @GetMapping("/exchangeRate/current")
+    public ResponseEntity<ExchangeRateResponse> getCurrentExchangeRate(
             @Valid @NotBlank @RequestParam(name = "fromCurrency") String fromCurrency,
             @Valid @NotBlank @RequestParam(name = "toCurrency") String toCurrency) {
 
         return ResponseEntity.ok(
             ExchangeRateMapper.INSTANCE.toApi(
-                exchangeRatesService.getExchangeRate(fromCurrency, toCurrency)
+                getExchangeRateUseCase.getCurrentExchangeRate(fromCurrency, toCurrency)
             )
         );
     }

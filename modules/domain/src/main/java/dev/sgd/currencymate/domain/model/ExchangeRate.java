@@ -17,6 +17,8 @@ public class ExchangeRate {
 
     private Currency to;
 
+    private String providerName;
+
     private BigDecimal rate;
 
     private OffsetDateTime lastRefreshed;

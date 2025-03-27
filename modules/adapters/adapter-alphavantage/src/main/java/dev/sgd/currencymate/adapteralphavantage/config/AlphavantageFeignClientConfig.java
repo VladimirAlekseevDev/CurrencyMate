@@ -1,6 +1,6 @@
 package dev.sgd.currencymate.adapteralphavantage.config;
 
-import dev.sgd.currencymate.domain.error.AdapterException;
+import dev.sgd.currencymate.domain.error.common.AdapterException;
 import feign.Retryer;
 import feign.codec.ErrorDecoder;
 import org.slf4j.Logger;

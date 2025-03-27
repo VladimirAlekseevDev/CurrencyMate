@@ -16,6 +16,8 @@ public class TimeSeries {
 
     private Currency to;
 
+    private String providerName;
+
     private OffsetDateTime lastRefreshed;
 
     private OffsetDateTime receivedAt;
