@@ -1,8 +1,6 @@
 package dev.sgd.currencymate.adapteralphavantage;
 
 import dev.sgd.currencymate.adapteralphavantage.client.AlphavantageClient;
-import dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper;
-import dev.sgd.currencymate.adapteralphavantage.mapper.TimeSeriesMapper;
 import dev.sgd.currencymate.adapteralphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.adapteralphavantage.model.timeseries.TimeSeriesDailyResponse;
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
@@ -16,6 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.support.RetrySynchronizationManager;
 import org.springframework.stereotype.Component;
+
+import static dev.sgd.currencymate.adapteralphavantage.mapper.ExchangeRateMapper.EXCHANGE_RATE_MAPPER;
+import static dev.sgd.currencymate.adapteralphavantage.mapper.TimeSeriesMapper.TIME_SERIES_MAPPER;
 
 @Component
 public class AlphavantageAdapterImpl implements AlphavantageAdapter {
@@ -47,10 +48,9 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
                 SERVICE_NAME, fromCurrency, toCurrency,
                 getRetryContext().map(RetryContext::getRetryCount).orElse(null));
 
-            ExchangeRateResponse response = client.getExchangeRate(FUNC_CURR_EXCHANGE_RATE, fromCurrency, toCurrency,
-                apiKey);
+            ExchangeRateResponse response = client.getExchangeRate(FUNC_CURR_EXCHANGE_RATE, fromCurrency, toCurrency, apiKey);
 
-            return ExchangeRateMapper.EXCHANGE_RATE_MAPPER.toDomain(response);
+            return EXCHANGE_RATE_MAPPER.toDomain(response);
         } catch (Exception e) {
             logger.error("Error getting exchange rate from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}, error: {}",
                 SERVICE_NAME, fromCurrency, toCurrency,
@@ -71,10 +71,9 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
                 getRetryContext().map(RetryContext::getRetryCount).orElse(null));
 
             TimeSeriesDailyResponse response = client.getExchangeRateDaily(
-                FUNC_CURR_EXCHANGE_RATE_DAILY, fromCurrency, toCurrency, EXCHANGE_RATE_DAILY_OUTPUT_SIZE_COMPACT,
-                apiKey);
+                FUNC_CURR_EXCHANGE_RATE_DAILY, fromCurrency, toCurrency, EXCHANGE_RATE_DAILY_OUTPUT_SIZE_COMPACT, apiKey);
 
-            return TimeSeriesMapper.INSTANCE.toDomain(response);
+            return TIME_SERIES_MAPPER.toDomain(response);
         } catch (Exception e) {
             logger.error(
                 "Error getting exchange rate daily from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}, error: {}",

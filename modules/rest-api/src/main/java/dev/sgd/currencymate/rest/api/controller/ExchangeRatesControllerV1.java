@@ -1,9 +1,7 @@
 package dev.sgd.currencymate.rest.api.controller;
 
-import dev.sgd.currencymate.rest.api.mapper.ExchangeRateMapper;
 import dev.sgd.currencymate.rest.api.model.response.DailyExchangeRateResponse;
 import dev.sgd.currencymate.rest.api.model.response.ExchangeRateResponse;
-import dev.sgd.currencymate.domain.model.TimeSeries;
 import dev.sgd.currencymate.usecase.GetDailyExchangeRatesUseCase;
 import dev.sgd.currencymate.usecase.GetCurrentExchangeRateUseCase;
 import jakarta.validation.Valid;
@@ -21,7 +19,7 @@ import static dev.sgd.currencymate.rest.api.mapper.ExchangeRateMapper.EXCHANGE_R
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class ExchangeRatesController {
+public class ExchangeRatesControllerV1 {
 
     private final GetCurrentExchangeRateUseCase getCurrentExchangeRateUseCase;
     private final GetDailyExchangeRatesUseCase getDailyExchangeRateUseCase;
