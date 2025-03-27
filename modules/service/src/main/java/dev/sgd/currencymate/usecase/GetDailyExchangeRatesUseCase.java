@@ -25,9 +25,21 @@ public class GetDailyExchangeRatesUseCase {
         log.info("{} Getting daily exchange rate fromCurrency: {}, toCurrency: {} using exchange rate providers",
                 LOG_PREFIX, fromCurrency, toCurrency);
 
+        List<ExchangeRateProvider> suitableProviders = getSuitableProviders(fromCurrency, toCurrency);
+
+        ExchangeRateDaily exchangeRateDaily = getExchangeRateDaily(suitableProviders, fromCurrency, toCurrency);
+
+        log.info("{} Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeries: {}",
+                LOG_PREFIX, fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily);
+
+        return exchangeRateDaily;
+    }
+
+    private List<ExchangeRateProvider> getSuitableProviders(String fromCurrency, String toCurrency) {
         List<ExchangeRateProvider> suitableProviders = exchangeRateProviders.stream()
                 .filter(provider -> provider.canProvideDailyExchangeRate(fromCurrency, toCurrency))
                 .toList();
+
         if (suitableProviders.isEmpty()) {
             log.error("{} No exchange rate provider found for getDailyExchangeRate method, fromCurrency: {}, toCurrency: {}",
                     LOG_PREFIX, fromCurrency, toCurrency);
@@ -35,6 +47,10 @@ public class GetDailyExchangeRatesUseCase {
             throw new FindExchangeRateProviderException();
         }
 
+        return suitableProviders;
+    }
+
+    private ExchangeRateDaily getExchangeRateDaily(List<ExchangeRateProvider> suitableProviders, String fromCurrency, String toCurrency) {
         ExchangeRateDaily exchangeRateDaily = null;
         RuntimeException lastException = null;
         Iterator<ExchangeRateProvider> providerIterator = suitableProviders.iterator();
@@ -47,15 +63,23 @@ public class GetDailyExchangeRatesUseCase {
             }
         } while (exchangeRateDaily == null && providerIterator.hasNext());
 
-        if (exchangeRateDaily == null && lastException != null) {
-            log.error("{} Error getting daily exchange rate from providers {}, last exception: {}",
-                    LOG_PREFIX, suitableProviders.stream().map(p -> p.getClass().getSimpleName()).toList(), lastException.getMessage());
+        if (exchangeRateDaily == null) {
+            List<String> suitableProvidersNames = suitableProviders.stream()
+                    .map(p -> p.getClass().getSimpleName())
+                    .toList();
 
-            throw lastException;
+            if (lastException != null) {
+                log.error("{} Error getting daily exchange rate from providers {}, last exception: {}",
+                        LOG_PREFIX, suitableProvidersNames, lastException.getMessage());
+
+                throw lastException;
+            } else {
+                log.error("{} Error getting daily exchange rate from providers {}, no exception received",
+                        LOG_PREFIX, suitableProvidersNames);
+
+                throw new FindExchangeRateProviderException();
+            }
         }
-
-        log.info("{} Got daily exchange rate fromCurrency: {}, toCurrency: {}, provider: {}, timeSeries: {}",
-                LOG_PREFIX, fromCurrency, toCurrency, exchangeRateDaily.getProviderName(), exchangeRateDaily);
 
         return exchangeRateDaily;
     }

@@ -74,7 +74,7 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
                      FeignException.InternalServerError.class },
         noRetryFor = { AdapterException.class },
         maxAttemptsExpression = "${app.adapter.alphavantage.retryMaxAttempts}",
-        backoff = @Backoff(delayExpression = "${}app.adapter.alphavantage.retryBackoffDelayMs}")
+        backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
     )
     public ExchangeRateDaily getExchangeRateDaily(String fromCurrency, String toCurrency) {
         logger.info("{} Getting exchange rate daily from service '{}', fromCurrency: {}, toCurrency: {}, retryCount: {}",

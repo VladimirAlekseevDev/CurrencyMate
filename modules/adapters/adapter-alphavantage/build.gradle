@@ -6,6 +6,8 @@ dependencies {
             "org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudStarterOpenFeignVersion",
             "org.springframework.retry:spring-retry:$springRetryVersion",
             "org.springframework:spring-aspects:$springAspectsVersion",
+            "org.aspectj:aspectjweaver:$aspectjVersion",
+            "com.opencsv:opencsv:$openCsvVersion",
     )
 
 }
