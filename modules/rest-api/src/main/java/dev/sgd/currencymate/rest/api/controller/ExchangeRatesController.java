@@ -3,7 +3,7 @@ package dev.sgd.currencymate.rest.api.controller;
 import dev.sgd.currencymate.rest.api.mapper.ExchangeRateMapper;
 import dev.sgd.currencymate.rest.api.model.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.TimeSeries;
-import dev.sgd.currencymate.services.ExchangeRatesService;
+import dev.sgd.currencymate.service.ExchangeRatesService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

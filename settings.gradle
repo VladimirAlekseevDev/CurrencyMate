@@ -12,11 +12,11 @@ gradle.beforeProject {
 }
 
 include ':domain'
-include ':services'
+include ':service'
 include ':rest-api'
 include ':adapter-alphavantage'
 
 project(':domain').projectDir = file('modules/domain')
-project(':services').projectDir = file('modules/services')
+project(':service').projectDir = file('modules/service')
 project(':rest-api').projectDir = file('modules/rest-api')
 project(':adapter-alphavantage').projectDir = file('modules/adapters/adapter-alphavantage')

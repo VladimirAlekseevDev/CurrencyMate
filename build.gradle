@@ -67,7 +67,7 @@ allprojects {
 dependencies {
     implementation(
             project(":domain"),
-            project(":services"),
+            project(":service"),
             project(":rest-api"),
             project(":adapter-alphavantage"),
 

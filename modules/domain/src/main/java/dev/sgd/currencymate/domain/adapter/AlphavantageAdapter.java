@@ -14,7 +14,6 @@ public interface AlphavantageAdapter {
      * USD -> RUB
      * TON -> FIAT (because no TON in crypto currencies)
      * CRYPTO -> RUB/GEL
-     * C
      */
     ExchangeRate getExchangeRate(String fromCurrency, String toCurrency) throws AdapterException;
 

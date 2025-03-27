@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.services;
+package dev.sgd.currencymate.service;
 
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
@@ -23,6 +23,7 @@ public class ExchangeRatesService {
 
         log.info("Got exchange rate fromCurrency: {}, toCurrency: {}, exchangeRate: {}",
             fromCurrency, toCurrency, exchangeRate);
+
         return exchangeRate;
     }
 
@@ -34,6 +35,7 @@ public class ExchangeRatesService {
 
         log.info("Got exchange rate daily fromCurrency: {}, toCurrency: {}, timeSeriesCount: {}",
             fromCurrency, toCurrency, timeSeries.getExchangeRateTimeSeries().size());
+
         return timeSeries;
     }
 

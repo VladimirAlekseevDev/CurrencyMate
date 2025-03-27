@@ -2,7 +2,7 @@ dependencies {
 
     implementation(
         project(":domain"),
-        project(":services"),
+        project(":service"),
 
         "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
         "org.springframework.boot:spring-boot-starter-validation:$springBootVersion",
