@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.api.model;
+package dev.sgd.currencymate.rest.api.model;
 
 import dev.sgd.currencymate.domain.model.Currency;
 import java.math.BigDecimal;

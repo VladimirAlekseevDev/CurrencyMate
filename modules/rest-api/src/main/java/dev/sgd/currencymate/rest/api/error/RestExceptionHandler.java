@@ -1,8 +1,8 @@
-package dev.sgd.currencymate.api.error;
+package dev.sgd.currencymate.rest.api.error;
 
 import static dev.sgd.currencymate.domain.error.ErrorEnum.REQUEST_VALIDATION_ERROR;
 
-import dev.sgd.currencymate.api.model.ErrorResponse;
+import dev.sgd.currencymate.rest.api.model.ErrorResponse;
 import dev.sgd.currencymate.domain.error.AdapterException;
 import dev.sgd.currencymate.domain.error.ErrorEnum;
 import jakarta.validation.ConstraintViolationException;
@@ -16,7 +16,6 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    // Обработка общего исключения RuntimeException
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(

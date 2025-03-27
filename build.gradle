@@ -66,16 +66,16 @@ allprojects {
 
 dependencies {
     implementation(
+            project(":domain"),
+            project(":services"),
+            project(":rest-api"),
+            project(":adapter-alphavantage"),
+
             /* Spring Cloud */
             "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j",
 
             /* Spring Monitoring and Management dependencies */
             "org.springframework.boot:spring-boot-starter-actuator",
-
-            project(":domain"),
-            project(":services"),
-            project(":api"),
-            project(":adapter-alphavantage"),
     )
 
     testImplementation (

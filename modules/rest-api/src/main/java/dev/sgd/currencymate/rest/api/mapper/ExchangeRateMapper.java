@@ -1,6 +1,6 @@
-package dev.sgd.currencymate.api.mapper;
+package dev.sgd.currencymate.rest.api.mapper;
 
-import dev.sgd.currencymate.api.model.ExchangeRateResponse;
+import dev.sgd.currencymate.rest.api.model.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

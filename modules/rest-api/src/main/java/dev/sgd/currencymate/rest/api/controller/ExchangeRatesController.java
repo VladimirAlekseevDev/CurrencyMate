@@ -1,7 +1,7 @@
-package dev.sgd.currencymate.api.rest;
+package dev.sgd.currencymate.rest.api.controller;
 
-import dev.sgd.currencymate.api.mapper.ExchangeRateMapper;
-import dev.sgd.currencymate.api.model.ExchangeRateResponse;
+import dev.sgd.currencymate.rest.api.mapper.ExchangeRateMapper;
+import dev.sgd.currencymate.rest.api.model.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.TimeSeries;
 import dev.sgd.currencymate.services.ExchangeRatesService;
 import jakarta.validation.Valid;
