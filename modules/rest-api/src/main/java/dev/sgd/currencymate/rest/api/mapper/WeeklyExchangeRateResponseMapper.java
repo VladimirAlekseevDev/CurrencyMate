@@ -1,9 +1,7 @@
 package dev.sgd.currencymate.rest.api.mapper;
 
-import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import dev.sgd.currencymate.rest.api.config.DefaultMapperConfig;
-import dev.sgd.currencymate.rest.api.model.response.DailyExchangeRateResponse;
 import dev.sgd.currencymate.rest.api.model.response.WeeklyExchangeRateResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

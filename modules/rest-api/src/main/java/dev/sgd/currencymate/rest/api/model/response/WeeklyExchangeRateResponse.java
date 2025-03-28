@@ -3,7 +3,6 @@ package dev.sgd.currencymate.rest.api.model.response;
 import dev.sgd.currencymate.rest.api.model.CurrencyDto;
 import dev.sgd.currencymate.rest.api.model.ExchangeRateValuesDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeeklyExchangeRateResponse {

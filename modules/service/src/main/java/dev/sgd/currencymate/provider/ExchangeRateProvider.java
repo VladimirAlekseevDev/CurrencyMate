@@ -1,7 +1,7 @@
 package dev.sgd.currencymate.provider;
 
-import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.DailyExchangeRate;
+import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import org.springframework.core.Ordered;
 

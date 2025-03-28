@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.alphavantage.model;
+package dev.sgd.currencymate.exchangerate.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ErrorResponse {
 
-    @JsonProperty("Error Message")
-    private String errorMessage;
+    private String result;
+
+    @JsonProperty("error-type")
+    private String errorType;
 
 }

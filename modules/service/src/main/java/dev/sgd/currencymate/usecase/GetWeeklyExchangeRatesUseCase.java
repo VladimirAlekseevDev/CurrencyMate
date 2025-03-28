@@ -1,7 +1,6 @@
 package dev.sgd.currencymate.usecase;
 
 import dev.sgd.currencymate.domain.error.specific.FindExchangeRateProviderException;
-import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import dev.sgd.currencymate.provider.ExchangeRateProvider;
 import lombok.extern.slf4j.Slf4j;

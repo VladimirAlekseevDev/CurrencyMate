@@ -2,8 +2,8 @@ package dev.sgd.currencymate.alphavantage;
 
 import dev.sgd.currencymate.alphavantage.client.AlphavantageClient;
 import dev.sgd.currencymate.alphavantage.currency.AlphavantageCurrencyHandler;
-import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.alphavantage.model.daily.DailyExchangeRateResponse;
+import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.alphavantage.model.weekly.WeeklyExchangeRateResponse;
 import dev.sgd.currencymate.domain.adapter.AlphavantageAdapter;
 import dev.sgd.currencymate.domain.enums.CurrencyType;

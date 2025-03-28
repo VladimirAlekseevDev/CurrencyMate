@@ -2,8 +2,8 @@ package dev.sgd.currencymate.alphavantage.client;
 
 import dev.sgd.currencymate.alphavantage.config.AlphavantageFeignClientConfig;
 import dev.sgd.currencymate.alphavantage.config.AlphavantageFeignErrorDecoder;
-import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.alphavantage.model.daily.DailyExchangeRateResponse;
+import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.alphavantage.model.weekly.WeeklyExchangeRateResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AlphavantageClient {
 
     /**
-     * <a href="https://www.alphavantage.co/documentation/#currency-exchange">Currency Exchange API Reference</a>
+     * <a href="https://www.alphavantage.co/documentation/#currency-exchange">
+     *     Currency Exchange API Reference
+     * </a>
      */
     @GetMapping("/query")
     ExchangeRateResponse getExchangeRate(
@@ -29,7 +31,9 @@ public interface AlphavantageClient {
         @RequestParam("apikey") String apiKey);
 
     /**
-     * <a href="https://www.alphavantage.co/documentation/#fx-daily">FX Daily API Reference</a>
+     * <a href="https://www.alphavantage.co/documentation/#fx-daily">
+     *     FX Daily API Reference
+     * </a>
      * @param outputSize compact / full
      */
     @GetMapping("/query")
@@ -42,8 +46,9 @@ public interface AlphavantageClient {
     );
 
     /**
-     * <a href="https://www.alphavantage.co/documentation/#fx-daily">FX Daily API Reference</a>
-     * @param outputSize compact / full
+     * <a href="https://www.alphavantage.co/documentation/#fx-weekly">
+     *     FX Weekly API Reference
+     * </a>
      */
     @GetMapping("/query")
     WeeklyExchangeRateResponse getWeeklyExchangeRate(

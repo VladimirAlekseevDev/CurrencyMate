@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.rest.api.model;
+package dev.sgd.currencymate.exchangerate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurrencyDto {
+public class ExchangeRateResponse {
 
-    private String code;
+    private String result;
 
-    private String name;
+
 
 }

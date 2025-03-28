@@ -5,6 +5,6 @@ import org.springframework.retry.annotation.EnableRetry;
 
 @EnableRetry
 @Configuration
-public class RetryConfig {
+public class AlphavantageRetryConfig {
 
 }
