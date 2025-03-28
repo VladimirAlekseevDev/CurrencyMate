@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
@@ -49,11 +50,11 @@ public class AlphavantageCurrencyHandler {
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesFromCsv() {
-        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH, CurrencyType.FIAT);
+        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH, FIAT);
         cryptoCurrencies = loadCurrenciesFromCSV(CRYPTO_CURRENCIES_CSV_PATH, CurrencyType.CRYPTO);
 
-        log.info("Loaded {} fiat currencies and {} crypto currencies from CSV files",
-                fiatCurrencies.size(), cryptoCurrencies.size());
+        log.info("Loaded Alphavantage {} {} currencies and {} crypto currencies from CSV files",
+                fiatCurrencies.size(), FIAT, cryptoCurrencies.size());
     }
 
     private List<Currency> loadCurrenciesFromCSV(String filePath, CurrencyType currencyType) {

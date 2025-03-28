@@ -1,5 +1,6 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
+import dev.sgd.currencymate.alphavantage.config.DefaultMapperConfig;
 import dev.sgd.currencymate.alphavantage.model.weekly.WeeklyExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
@@ -8,10 +9,13 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = { ExchangeRateValuesMapper.class, DateTimeMapper.class})
+import static org.mapstruct.factory.Mappers.getMapper;
+
+@Mapper(config = DefaultMapperConfig.class,
+        uses = { ExchangeRateValuesMapper.class, DateTimeMapper.class })
 public interface WeeklyExchangeRateResponseMapper {
 
-    WeeklyExchangeRateResponseMapper WEEKLY_EXCHANGE_RATE_RESPONSE_MAPPER = Mappers.getMapper(WeeklyExchangeRateResponseMapper.class);
+    WeeklyExchangeRateResponseMapper WEEKLY_EXCHANGE_RATE_RESPONSE_MAPPER = getMapper(WeeklyExchangeRateResponseMapper.class);
 
     @Mapping(target = "info", source = "metadata.information")
     @Mapping(target = "from.code", source = "metadata.fromSymbol")

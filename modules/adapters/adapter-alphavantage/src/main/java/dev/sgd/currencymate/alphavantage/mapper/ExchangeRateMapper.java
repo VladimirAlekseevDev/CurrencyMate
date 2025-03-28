@@ -1,15 +1,19 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
+import dev.sgd.currencymate.alphavantage.config.DefaultMapperConfig;
 import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = { DateTimeMapper.class })
+import static org.mapstruct.factory.Mappers.getMapper;
+
+@Mapper(config = DefaultMapperConfig.class,
+        uses = { DateTimeMapper.class })
 public interface ExchangeRateMapper {
 
-    ExchangeRateMapper EXCHANGE_RATE_MAPPER = Mappers.getMapper(ExchangeRateMapper.class);
+    ExchangeRateMapper EXCHANGE_RATE_MAPPER = getMapper(ExchangeRateMapper.class);
 
     @Mapping(target = "from.code", source = "exchangeRate.fromCurrencyCode")
     @Mapping(target = "from.name", source = "exchangeRate.fromCurrencyName")

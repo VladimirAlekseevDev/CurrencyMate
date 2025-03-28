@@ -1,5 +1,6 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
+import dev.sgd.currencymate.alphavantage.config.DefaultMapperConfig;
 import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -8,10 +9,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
-@Mapper
+import static org.mapstruct.factory.Mappers.getMapper;
+
+@Mapper(config = DefaultMapperConfig.class)
 public interface DateTimeMapper {
 
-    DateTimeMapper INSTANCE = Mappers.getMapper(DateTimeMapper.class);
+    DateTimeMapper INSTANCE = getMapper(DateTimeMapper.class);
 
     default OffsetDateTime mapToOffsetDateTime(LocalDate lastRefreshed, String timeZone) {
         if (lastRefreshed == null) {

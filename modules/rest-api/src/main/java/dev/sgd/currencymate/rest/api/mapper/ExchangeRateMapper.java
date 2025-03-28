@@ -6,11 +6,13 @@ import dev.sgd.currencymate.rest.api.model.response.ExchangeRateResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import static org.mapstruct.factory.Mappers.getMapper;
+
 @Mapper(config = DefaultMapperConfig.class,
         uses = { CurrencyMapper.class })
 public interface ExchangeRateMapper {
 
-    ExchangeRateMapper EXCHANGE_RATE_MAPPER = Mappers.getMapper(ExchangeRateMapper.class);
+    ExchangeRateMapper EXCHANGE_RATE_MAPPER = getMapper(ExchangeRateMapper.class);
 
     ExchangeRateResponse toApi(ExchangeRate domain);
 
