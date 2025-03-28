@@ -15,8 +15,10 @@ include ':domain'
 include ':service'
 include ':rest-api'
 include ':adapter-alphavantage'
+include ':adapter-exchangerate'
 
 project(':domain').projectDir = file('modules/domain')
 project(':service').projectDir = file('modules/service')
 project(':rest-api').projectDir = file('modules/rest-api')
 project(':adapter-alphavantage').projectDir = file('modules/adapters/adapter-alphavantage')
+project(':adapter-exchangerate').projectDir = file('modules/adapters/adapter-exchangerate')
