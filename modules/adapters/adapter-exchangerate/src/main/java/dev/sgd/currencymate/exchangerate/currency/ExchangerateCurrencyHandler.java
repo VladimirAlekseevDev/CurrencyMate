@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
+import static dev.sgd.currencymate.exchangerate.mapper.CurrencyMapper.CURRENCY_MAPPER;
 
 @Slf4j
 @Component
@@ -61,8 +62,13 @@ public class ExchangerateCurrencyHandler {
     public void loadCurrenciesFromApi() {
         log.info("Loading Exchangerate {} currencies from API", FIAT);
 
-        AllCurrenciesResponse response = client.getAllCurrencies(apiKey);
-        response.getSupportedCodes()
+        fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
+                .map(AllCurrenciesResponse::getSupportedCodes)
+                .map(CURRENCY_MAPPER::toDomain)
+                .orElseThrow(() -> {
+                    logger.error("Failed to load Exchangerate currencies from API");
+                    return new AdapterException();
+                });
 
         log.info("Loaded Exchangerate {} {} currencies from API", fiatCurrencies.size(), FIAT);
     }

@@ -1,0 +1,8 @@
+dependencies {
+    implementation(
+            project(":domain"),
+
+            "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
+    )
+
+}

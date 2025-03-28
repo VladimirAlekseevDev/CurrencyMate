@@ -3,8 +3,10 @@ package dev.sgd.currencymate.exchangerate;
 import dev.sgd.currencymate.domain.adapter.ExchangerateAdapter;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
+import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.exchangerate.client.ExchangerateClient;
+import dev.sgd.currencymate.exchangerate.currency.ExchangerateCurrencyHandler;
 import dev.sgd.currencymate.exchangerate.model.ExchangeRateResponse;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -28,16 +30,16 @@ public class ExchangerateAdapterImpl implements ExchangerateAdapter {
     private static final String SERVICE_NAME = "exchangerate";
 
     private final ExchangerateClient client;
-    //private final AlphavantageCurrencyHandler currencyHandler;
+    private final ExchangerateCurrencyHandler currencyHandler;
     private final String apiKey;
     private final Logger logger;
 
     public ExchangerateAdapterImpl(ExchangerateClient client,
-                                   //AlphavantageCurrencyHandler currencyHandler,
+                                   ExchangerateCurrencyHandler currencyHandler,
                                    @Value("${app.adapter.exchangerate.apiKey}") String apiKey,
                                    @Qualifier("feignLogger") Logger logger) {
         this.client = client;
-        //this.currencyHandler = currencyHandler;
+        this.currencyHandler = currencyHandler;
         this.apiKey = apiKey;
         this.logger = logger;
     }
@@ -58,13 +60,27 @@ public class ExchangerateAdapterImpl implements ExchangerateAdapter {
 
         ExchangeRateResponse response = client.getExchangeRate(apiKey, fromCurrencyCode, toCurrencyCode);
 
-        // TODO: fill from.name and to.name
-        return EXCHANGE_RATE_MAPPER.toDomain(response);
+        Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
+        Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
+
+        ExchangeRate exchangeRate = EXCHANGE_RATE_MAPPER.toDomain(response);
+        EXCHANGE_RATE_MAPPER.setCurrenciesNameAndType(exchangeRate, fromCurrency, toCurrency);
+
+        return exchangeRate;
     }
 
     @Override
     public boolean canProvideCurrentExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
-        return false;
+        Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElse(null);
+        if (fromCurrency == null) {
+            return false;
+        }
+        Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElse(null);
+        if (toCurrency == null) {
+            return false;
+        }
+
+        return true;
     }
 
     private Integer getRetryCount() {

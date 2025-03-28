@@ -2,6 +2,7 @@ dependencies {
 
     implementation(
         project(":domain"),
+        project(":common-config"),
         project(":service"),
 
         "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
