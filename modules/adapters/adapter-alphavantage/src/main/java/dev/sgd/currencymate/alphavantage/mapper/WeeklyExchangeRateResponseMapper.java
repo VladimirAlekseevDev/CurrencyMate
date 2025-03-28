@@ -1,6 +1,7 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
 import dev.sgd.currencymate.alphavantage.model.weekly.WeeklyExchangeRateResponse;
+import dev.sgd.currencymate.config.DefaultMapperConfig;
 import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import org.mapstruct.Mapper;
