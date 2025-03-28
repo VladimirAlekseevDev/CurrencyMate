@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyExchangeRateValuesDto {
+public class ExchangeRateValuesDto {
 
     private BigDecimal open;
 

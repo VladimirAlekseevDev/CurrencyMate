@@ -2,12 +2,12 @@ package dev.sgd.currencymate.rest.api.mapper;
 
 import dev.sgd.currencymate.domain.model.ExchangeRateValues;
 import dev.sgd.currencymate.rest.api.config.DefaultMapperConfig;
-import dev.sgd.currencymate.rest.api.model.DailyExchangeRateValuesDto;
+import dev.sgd.currencymate.rest.api.model.ExchangeRateValuesDto;
 import org.mapstruct.Mapper;
 
 @Mapper(config = DefaultMapperConfig.class)
-public interface DailyExchangeRateValuesMapper {
+public interface ExchangeRateValuesMapper {
 
-    DailyExchangeRateValuesDto toApi(ExchangeRateValues domain);
+    ExchangeRateValuesDto toApi(ExchangeRateValues domain);
 
 }

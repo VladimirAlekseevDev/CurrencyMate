@@ -15,7 +15,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DailyExchangeRateResponse {
+public class WeeklyExchangeRateResponse {
 
     private String info;
 
