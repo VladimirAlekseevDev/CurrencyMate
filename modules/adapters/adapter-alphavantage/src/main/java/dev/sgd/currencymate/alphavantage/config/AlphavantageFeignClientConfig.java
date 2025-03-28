@@ -21,11 +21,6 @@ public class AlphavantageFeignClientConfig {
     private int readTimeoutMillis;
 
     @Bean
-    public Logger feignLogger() {
-        return LoggerFactory.getLogger("feign.client");
-    }
-
-    @Bean
     public Request.Options alphavantageOptions() {
         return new Request.Options(
                 connectTimeoutMillis, TimeUnit.MILLISECONDS,

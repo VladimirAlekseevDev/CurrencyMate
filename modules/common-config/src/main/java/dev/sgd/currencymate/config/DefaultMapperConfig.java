@@ -1,4 +1,4 @@
-package dev.sgd.currencymate.alphavantage.config;
+package dev.sgd.currencymate.config;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.NullValueCheckStrategy;

@@ -1,11 +1,9 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
-import dev.sgd.currencymate.alphavantage.config.DefaultMapperConfig;
 import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import static org.mapstruct.factory.Mappers.getMapper;
 

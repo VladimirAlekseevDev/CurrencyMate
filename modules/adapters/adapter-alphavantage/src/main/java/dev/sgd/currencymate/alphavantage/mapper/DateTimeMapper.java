@@ -1,9 +1,8 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
-import dev.sgd.currencymate.alphavantage.config.DefaultMapperConfig;
+import dev.sgd.currencymate.config.DefaultMapperConfig;
 import dev.sgd.currencymate.domain.utils.DateTimeUtils;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

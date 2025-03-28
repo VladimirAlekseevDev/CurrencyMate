@@ -6,7 +6,6 @@ import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.exchangerate.client.ExchangerateClient;
 import dev.sgd.currencymate.exchangerate.model.AllCurrenciesResponse;
 import feign.FeignException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;

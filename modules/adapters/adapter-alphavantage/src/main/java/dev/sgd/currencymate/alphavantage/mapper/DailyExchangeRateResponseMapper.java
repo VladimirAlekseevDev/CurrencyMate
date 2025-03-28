@@ -1,13 +1,12 @@
 package dev.sgd.currencymate.alphavantage.mapper;
 
-import dev.sgd.currencymate.alphavantage.config.DefaultMapperConfig;
 import dev.sgd.currencymate.alphavantage.model.daily.DailyExchangeRateResponse;
+import dev.sgd.currencymate.config.DefaultMapperConfig;
 import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 import static org.mapstruct.factory.Mappers.getMapper;
 

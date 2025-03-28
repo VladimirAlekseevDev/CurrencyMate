@@ -1,7 +1,7 @@
 package dev.sgd.currencymate.exchangerate.mapper;
 
+import dev.sgd.currencymate.config.DefaultMapperConfig;
 import dev.sgd.currencymate.domain.model.Currency;
-import dev.sgd.currencymate.exchangerate.config.DefaultMapperConfig;
 import dev.sgd.currencymate.exchangerate.model.CurrencyDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

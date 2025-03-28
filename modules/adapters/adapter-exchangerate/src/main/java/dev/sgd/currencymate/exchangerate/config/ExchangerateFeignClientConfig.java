@@ -21,11 +21,6 @@ public class ExchangerateFeignClientConfig {
     private int readTimeoutMillis;
 
     @Bean
-    public Logger feignLogger() {
-        return LoggerFactory.getLogger("feign.client");
-    }
-
-    @Bean
     public Request.Options exchangerateOptions() {
         return new Request.Options(
                 connectTimeoutMillis, TimeUnit.MILLISECONDS,
