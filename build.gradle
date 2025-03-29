@@ -87,6 +87,14 @@ dependencies {
     testRuntimeOnly (
             "org.junit.platform:junit-platform-launcher"
     )
+
+    testCompileOnly(
+            "org.projectlombok:lombok:$lombokVersion"
+    )
+
+    testAnnotationProcessor(
+            "org.projectlombok:lombok:$lombokVersion"
+    )
 }
 
 tasks.named("test") {
