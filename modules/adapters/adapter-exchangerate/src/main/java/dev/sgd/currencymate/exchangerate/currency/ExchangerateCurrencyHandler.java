@@ -15,6 +15,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -22,7 +23,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
+import static dev.sgd.currencymate.exchangerate.ExchangerateAdapterImpl.API_KEY_PREFIX;
 import static dev.sgd.currencymate.exchangerate.mapper.CurrencyMapper.CURRENCY_MAPPER;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Slf4j
 @Component
@@ -37,7 +40,7 @@ public class ExchangerateCurrencyHandler {
     public ExchangerateCurrencyHandler(@Value("${app.adapter.exchangerate.apiKey}") String apiKey,
                                        ExchangerateClient client,
                                        @Qualifier("feignLogger") Logger logger) {
-        this.apiKey = apiKey;
+        this.apiKey = API_KEY_PREFIX + apiKey;
         this.client = client;
         this.logger = logger;
     }
@@ -63,7 +66,8 @@ public class ExchangerateCurrencyHandler {
 
         fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
                 .map(AllCurrenciesResponse::getSupportedCodes)
-                .map(CURRENCY_MAPPER::toDomain)
+                .map(CURRENCY_MAPPER::toDomains)
+                .filter(currencies -> !isEmpty(currencies))
                 .orElseThrow(() -> {
                     logger.error("Failed to load Exchangerate currencies from API");
                     return new AdapterException();

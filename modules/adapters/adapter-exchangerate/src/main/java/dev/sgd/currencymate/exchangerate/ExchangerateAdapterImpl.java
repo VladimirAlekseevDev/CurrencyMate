@@ -27,6 +27,8 @@ import static dev.sgd.currencymate.exchangerate.mapper.ExchangeRateMapper.EXCHAN
 @Component
 public class ExchangerateAdapterImpl implements ExchangerateAdapter {
 
+    public static final String API_KEY_PREFIX = "Bearer ";
+
     private static final String SERVICE_NAME = "exchangerate";
 
     private final ExchangerateClient client;
@@ -40,7 +42,7 @@ public class ExchangerateAdapterImpl implements ExchangerateAdapter {
                                    @Qualifier("feignLogger") Logger logger) {
         this.client = client;
         this.currencyHandler = currencyHandler;
-        this.apiKey = apiKey;
+        this.apiKey = API_KEY_PREFIX + apiKey;
         this.logger = logger;
     }
 

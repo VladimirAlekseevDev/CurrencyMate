@@ -25,6 +25,7 @@ public interface ExchangerateClient {
      *     Documentation for the Supported Codes ExchangeRate-API endpoint
      * </a>
      */
+    @GetMapping("/codes")
     AllCurrenciesResponse getAllCurrencies(@RequestHeader(AUTHORIZATION) String apiKey);
 
     /**

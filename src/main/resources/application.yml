@@ -71,14 +71,14 @@ app:
   adapter:
     alphavantage:
       url: ${EXT_ALPHAVANTAGE_URL:https://www.alphavantage.co}
-      apiKey: ${EXT_ALPHAVANTAGE_API_KEY}
+      apiKey: ${EXT_ALPHAVANTAGE_API_KEY:apikey}
       connectTimeoutMs: ${EXT_ALPHAVANTAGE_CONNECT_TIMEOUT:10000} # ms
       readTimeoutMs: ${EXT_ALPHAVANTAGE_READ_TIMEOUT:30000} # ms
       retryMaxAttempts: ${EXT_ALPHAVANTAGE_RETRY_ATTEMPTS:5}
       retryBackoffDelayMs: ${EXT_ALPHAVANTAGE_RETRY_DELAY:2000} # ms
     exchangerate:
       url: ${EXT_EXCHANGERATE_URL:https://v6.exchangerate-api.com/v6}
-      apiKey: ${EXT_EXCHANGERATE_API_KEY}
+      apiKey: ${EXT_EXCHANGERATE_API_KEY:apikey}
       connectTimeoutMs: ${EXT_EXCHANGERATE_CONNECT_TIMEOUT:10000} # ms
       readTimeoutMs: ${EXT_EXCHANGERATE_READ_TIMEOUT:30000} # ms
       retryMaxAttempts: ${EXT_EXCHANGERATE_RETRY_ATTEMPTS:5}

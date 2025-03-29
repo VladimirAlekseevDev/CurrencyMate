@@ -22,6 +22,6 @@ public class AllCurrenciesResponse {
     private String termsOfUse;
 
     @JsonProperty("supported_codes")
-    private List<CurrencyDto> supportedCodes;
+    private List<List<String>> supportedCodes;
 
 }
