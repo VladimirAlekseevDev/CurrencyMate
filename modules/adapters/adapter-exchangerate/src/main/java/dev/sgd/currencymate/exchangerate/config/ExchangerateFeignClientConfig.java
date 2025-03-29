@@ -1,8 +1,6 @@
 package dev.sgd.currencymate.exchangerate.config;
 
 import feign.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
