@@ -59,6 +59,17 @@ management:
   endpoint:
     health:
       show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
 
 # Springdoc OpenAPI
 springdoc:

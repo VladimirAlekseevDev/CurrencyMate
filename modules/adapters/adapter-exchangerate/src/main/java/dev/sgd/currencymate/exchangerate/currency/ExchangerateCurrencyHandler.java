@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,14 +64,22 @@ public class ExchangerateCurrencyHandler {
     public void loadCurrenciesFromApi() {
         log.info("Loading Exchangerate {} currencies from API", FIAT);
 
-        fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
-                .map(AllCurrenciesResponse::getSupportedCodes)
-                .map(CURRENCY_MAPPER::toDomains)
-                .filter(currencies -> !isEmpty(currencies))
-                .orElseThrow(() -> {
-                    logger.error("Failed to load Exchangerate currencies from API");
-                    return new AdapterException();
-                });
+        try {
+            fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
+                    .map(AllCurrenciesResponse::getSupportedCodes)
+                    .map(CURRENCY_MAPPER::toDomains)
+                    .filter(currencies -> !isEmpty(currencies))
+                    .orElseThrow(() -> {
+                        logger.error("Failed to load Exchangerate currencies from API, response body is empty");
+                        return new AdapterException();
+                    });
+        } catch (Exception e) {
+            logger.error("!!! Failed to load Exchangerate currencies from API, key={}, error message: {}", apiKey, e.getMessage(), e);
+            logger.warn("Initializing Exchangerate currencies with empty list because of the error during initialization");
+            fiatCurrencies = new ArrayList<>();
+
+            return;
+        }
 
         log.info("Loaded Exchangerate {} {} currencies from API", fiatCurrencies.size(), FIAT);
     }
