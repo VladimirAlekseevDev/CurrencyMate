@@ -24,10 +24,17 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/mnt/secrets"
-              readOnly: true
+          env:
+            - name: EXT_ALPHAVANTAGE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: currency-mate-secrets
+                  key: EXT_ALPHAVANTAGE_API_KEY
+            - name: EXT_EXCHANGERATE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: currency-mate-secrets
+                  key: EXT_EXCHANGERATE_API_KEY
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -40,10 +47,3 @@ spec:
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 5
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "currency-mate-secret-provider"

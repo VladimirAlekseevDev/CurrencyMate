@@ -8,16 +8,12 @@ WORKDIR /app
 COPY . /app
 RUN ./gradlew clean build -x test
 
-# Stage 2: Runtime Stage
+# Stage 2: Set Up Runtime Stage
 FROM $BASE_IMAGE_JRE
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 COPY --from=build /app/build/libs/*.jar /app/service.jar
-ENV JAVA_TOOL_OPTIONS="-Duser.timezone=UTC -Dspring.profiles.active=dev -XX:+UseZGC -XX:ParallelGCThreads=4"
 
-# Stage 3: Creating wrapper script
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Stage 3: Run
+CMD ["java", "-Duser.timezone=UTC", "-Dspring.profiles.active=dev", "-XX:+UseZGC", "-XX:ParallelGCThreads=4", "-jar", "/app/service.jar"]
