@@ -14,6 +14,15 @@ spring:
   jackson:
     time-zone: ${APP_TIME_ZONE:UTC}
 
+# Feign (Spring Cloud)
+feign:
+  client:
+    config:
+      default:
+        logger-level: FULL
+        connect-timeout: 5000 # ms
+        read-timeout: 15000 # ms
+
 # Logging
 logging:
   level:
@@ -23,15 +32,6 @@ logging:
     feign.client: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-
-# Feign (Spring Cloud)
-feign:
-  client:
-    config:
-      default:
-        logger-level: FULL
-        connect-timeout: 5000 # ms
-        read-timeout: 15000 # ms
 
 # Resilience4j (Circuit Breaker)
 resilience4j:
@@ -51,6 +51,8 @@ resilience4j:
 
 # Actuator
 management:
+  server:
+    port: 8081
   endpoints:
     web:
       exposure:

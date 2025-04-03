@@ -9,8 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExchangeRateProviderEnum {
 
+    EXCHANGERATE_PROVIDER(2, ExchangerateExchangeRateProvider.class.getSimpleName()),
     ALPHAVANTAGE_PROVIDER(1, AlphavantageExchangeRateProvider.class.getSimpleName()),
-    EXCHANGERATE_PROVIDER(2, ExchangerateExchangeRateProvider.class.getSimpleName());
+    ;
 
     private final int order;
     private final String name;
