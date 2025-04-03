@@ -65,6 +65,11 @@ jobs:
         with:
           version: 'latest'
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
       - name: Authenticate with Google Cloud Kubernetes
         run: gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER_NAME}} --region ${{secrets.GKE_CLUSTER_REGION}}
 
