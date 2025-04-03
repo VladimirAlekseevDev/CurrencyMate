@@ -17,7 +17,9 @@ RUN ./gradlew dependencies --no-daemon
 
 # Stage 2: App Build Stage
 FROM deps AS build
+WORKDIR /app
 COPY . .
+RUN chmod +x gradlew
 RUN ./gradlew clean build -x test --no-daemon
 
 # Stage 3: Set Up Runtime Stage
