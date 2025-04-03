@@ -13,7 +13,7 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
 
-        log.info("Application Time Zone: {}", TimeZone.getDefault().getID());
+        log.info("Application Default Time Zone: {}", TimeZone.getDefault().getID());
     }
 
 }
