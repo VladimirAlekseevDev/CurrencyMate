@@ -72,6 +72,6 @@ jobs:
       - name: Authenticate with Google Cloud Kubernetes
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_CLUSTER_REGION }}
 
-      # Перезапуск деплоймента
+      # Restart Deployment
       - name: Restart Deployment
         run: kubectl rollout restart deployment currency-mate-deployment -n currency-mate-namespace
