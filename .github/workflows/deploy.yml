@@ -10,31 +10,25 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
-      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Auth to Google Artifact Registry
       - name: Authenticate Docker with Google Cloud
         uses: google-github-actions/auth@v0
         with:
           credentials_json: ${{secrets.GCP_SA_KEY}}
 
-      # Setup Google Cloud SDK
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{secrets.GCP_PROJECT_ID}}
 
-      # Auth Docker for Google Artifact Registry
       - name: Configure Docker for Google Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      # Build Docker Image
       - name: Build Docker Image
         run: docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest .
 
-      # Push Docker Image to Google Artifact Registry
       - name: Push Docker Image to Google Cloud Artifact Registry
         run: docker push us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest
 
@@ -43,11 +37,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Run Tests
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Run Tests
         run: ./gradlew test
 
@@ -56,27 +51,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Setup Google Cloud SDK
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           service_account_key: ${{secrets.GCP_SA_KEY}}
           project_id: ${{secrets.GCP_PROJECT_ID}}
 
-      # Setup `kubectl`
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
 
-      # Auth to Kubernetes through Google Cloud
       - name: Authenticate with Google Cloud Kubernetes
         run: gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER_NAME}} --region ${{secrets.GKE_CLUSTER_REGION}}
 
-      # Restart Deployment
       - name: Restart Deployment
         run: kubectl rollout restart deployment currency-mate-deployment -n currency-mate-namespace
