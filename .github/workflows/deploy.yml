@@ -18,20 +18,23 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{secrets.GCP_SA_KEY}}
+          project_id: ${{secrets.GCP_PROJECT_ID}}
 
       # Auth to Google Artifact Registry
       - name: Authenticate Docker with Google Cloud
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+        run: |
+          echo "${{secrets.GCP_SA_KEY}}" > ${HOME}/keyfile.json
+          gcloud auth activate-service-account --key-file=${HOME}/keyfile.json
+          gcloud auth configure-docker us-central1-docker.pkg.dev
 
       # Build Docker Image
       - name: Build Docker Image
-        run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/currency-mate-docker-images/currency-mate-srv:latest .
+        run: docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest .
 
       # Push Docker Image to Google Artifact Registry
       - name: Push Docker Image to Google Cloud Artifact Registry
-        run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/currency-mate-docker-images/currency-mate-srv:latest
+        run: docker push us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest
 
   test:
     name: Run Tests
@@ -59,8 +62,8 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{secrets.GCP_SA_KEY}}
+          project_id: ${{secrets.GCP_PROJECT_ID}}
 
       # Setup `kubectl`
       - name: Set up kubectl
@@ -70,7 +73,7 @@ jobs:
 
       # Auth to Kubernetes through Google Cloud
       - name: Authenticate with Google Cloud Kubernetes
-        run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_CLUSTER_REGION }}
+        run: gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER_NAME}} --region ${{secrets.GKE_CLUSTER_REGION}}
 
       # Restart Deployment
       - name: Restart Deployment
