@@ -33,6 +33,12 @@ allprojects {
         mavenCentral()
     }
 
+    // Compile optimization
+    tasks.withType(JavaCompile).configureEach {
+        options.fork = true
+        options.incremental = true
+    }
+
     dependencies {
         annotationProcessor (
                 "org.projectlombok:lombok:$lombokVersion",
