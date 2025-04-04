@@ -1,4 +1,5 @@
-name: CI/CD Pipeline
+name: Build and Deploy to GC Kubernetes
+description: This pipeline builds docker image, pushes it to GC Artifact Registry and deploys it to GC Kubernetes
 
 on:
   push:
@@ -18,22 +19,22 @@ jobs:
         with:
           credentials_json: ${{secrets.GCP_SA_KEY}}
 
-      - name: Setup Google Cloud SDK 🌐
+      - name: Setup Google Cloud SDK ⚙️
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{secrets.GCP_PROJECT_ID}}
 
-      - name: Configure Docker for Google Artifact Registry ⚙️
+      - name: Configure Docker for Google Artifact Registry 🔧
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Build Docker Image 🏗️
-        run: docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest .
+        run: docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/${{secrets.GCP_IMAGE_NAME}}:latest .
 
       - name: Push Docker Image to Google Cloud Artifact Registry 🚢
-        run: docker push us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest
+        run: docker push us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/${{secrets.GCP_IMAGE_NAME}}:latest
 
   test:
-    name: Run Tests 🧪
+    name: Run Tests 👀
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -48,7 +49,7 @@ jobs:
 
   deploy:
     name: Deploy to Kubernetes 🚀
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: test
     steps:
       - name: Checkout repository 📂
@@ -82,4 +83,4 @@ jobs:
         run: gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER_NAME}} --zone=${{secrets.GKE_CLUSTER_ZONE}}
 
       - name: Restart Deployment 🔄
-        run: kubectl rollout restart deployment currency-mate-deployment -n currency-mate-namespace
+        run: kubectl rollout restart deployment ${{secrets.GKE_DEPLOYMENT_NAME}} -n currency-mate-namespace
