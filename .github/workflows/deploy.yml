@@ -7,74 +7,80 @@ on:
 
 jobs:
   build:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
+    name: Build Docker Image 🐳
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout repository
+      - name: Checkout repository 📂
         uses: actions/checkout@v3
 
-      - name: Authenticate Docker with Google Cloud
+      - name: Authenticate Docker with Google Cloud 🔑
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{secrets.GCP_SA_KEY}}
 
-      - name: Setup Google Cloud SDK
+      - name: Setup Google Cloud SDK ☁️
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{secrets.GCP_PROJECT_ID}}
 
-      - name: Configure Docker for Google Artifact Registry
+      - name: Configure Docker for Google Artifact Registry ⚙️
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      - name: Build Docker Image
+      - name: Build Docker Image 🏗️
         run: docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest .
 
-      - name: Push Docker Image to Google Cloud Artifact Registry
+      - name: Push Docker Image to Google Cloud Artifact Registry 🚀
         run: docker push us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest
 
   test:
-    name: Run Tests
-    runs-on: ubuntu-latest
+    name: Run Tests 🧪
+    runs-on: ubuntu-22.04
     needs: build
     steps:
-      - name: Checkout repository
+      - name: Checkout repository 📂
         uses: actions/checkout@v3
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission for gradlew 🔓
         run: chmod +x gradlew
 
-      - name: Run Tests
+      - name: Run Tests ✅
         run: ./gradlew test
 
   deploy:
-    name: Deploy to Kubernetes
-    runs-on: ubuntu-latest
+    name: Deploy to Kubernetes 🚀
+    runs-on: ubuntu-22.04
     needs: test
     steps:
-      - name: Checkout repository
+      - name: Checkout repository 📂
         uses: actions/checkout@v3
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud 🔑
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{secrets.GCP_SA_KEY}}
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
 
-      - name: Set up kubectl
+      - name: Add Google Cloud SDK repository 📦
+        run: |
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+          sudo apt-get update
+
+      - name: Install gke-gcloud-auth-plugin ⚙️
+        run: sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
+
+
+      - name: Set up kubectl 🛠️
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
 
-      - name: Configure kubectl to use gke-gcloud-auth-plugin
+      - name: Configure kubectl to use gke-gcloud-auth-plugin 🔧
         run: |
           export USE_GKE_GCLOUD_AUTH_PLUGIN=True
           echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> ~/.bashrc
 
-      - name: Authenticate with Google Cloud Kubernetes
+      - name: Authenticate with Google Cloud Kubernetes ☁️
         run: gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER_NAME}} --zone=${{secrets.GKE_CLUSTER_ZONE}}
 
-      - name: Restart Deployment
+      - name: Restart Deployment 🔄
         run: kubectl rollout restart deployment currency-mate-deployment -n currency-mate-namespace
