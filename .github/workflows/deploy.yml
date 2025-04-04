@@ -8,17 +8,17 @@ on:
 jobs:
   build:
     name: Build Docker Image 🐳
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository 📂
         uses: actions/checkout@v3
 
-      - name: Authenticate Docker with Google Cloud 🔑
+      - name: Authenticate Docker with Google Cloud 🔐
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{secrets.GCP_SA_KEY}}
 
-      - name: Setup Google Cloud SDK ☁️
+      - name: Setup Google Cloud SDK 🌐
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{secrets.GCP_PROJECT_ID}}
@@ -29,12 +29,12 @@ jobs:
       - name: Build Docker Image 🏗️
         run: docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest .
 
-      - name: Push Docker Image to Google Cloud Artifact Registry 🚀
+      - name: Push Docker Image to Google Cloud Artifact Registry 🚢
         run: docker push us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/currency-mate-docker-images/currency-mate-srv:latest
 
   test:
     name: Run Tests 🧪
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout repository 📂
@@ -48,7 +48,7 @@ jobs:
 
   deploy:
     name: Deploy to Kubernetes 🚀
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: test
     steps:
       - name: Checkout repository 📂
@@ -67,7 +67,6 @@ jobs:
 
       - name: Install gke-gcloud-auth-plugin ⚙️
         run: sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
-
 
       - name: Set up kubectl 🛠️
         uses: azure/setup-kubectl@v3
