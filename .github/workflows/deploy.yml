@@ -1,5 +1,5 @@
 name: Build and Deploy to GC Kubernetes
-description: This pipeline builds docker image, pushes it to GC Artifact Registry and deploys it to GC Kubernetes
+description: When pushed to main, this pipeline builds docker image, pushes it to GC Artifact Registry and deploys to GC Kubernetes
 
 on:
   push:
