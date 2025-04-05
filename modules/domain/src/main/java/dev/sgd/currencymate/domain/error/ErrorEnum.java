@@ -11,7 +11,12 @@ public enum ErrorEnum {
     ADAPTER_ERROR("Exception occurred while calling another service, please try again later"),
 
     /* More specific */
-    FIND_EXCHANGE_RATE_PROVIDER_ERROR("We don't yet have a suitable provider for the requested currencies, please try using other currencies"),;
+    FIND_EXCHANGE_RATE_PROVIDER_ERROR(
+            """
+            We don't yet have a suitable provider for the requested currencies 😟
+            Please try using other currencies
+            """
+    );
 
 
     private final String message;
