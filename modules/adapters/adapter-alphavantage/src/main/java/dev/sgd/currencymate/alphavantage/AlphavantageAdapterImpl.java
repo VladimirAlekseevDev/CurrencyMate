@@ -67,8 +67,8 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         backoff = @Backoff(delayExpression = "${app.adapter.alphavantage.retryBackoffDelayMs}")
     )
     public ExchangeRate getExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
-        logger.info("Getting exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
-            SERVICE_NAME, fromCurrencyCode, toCurrencyCode, getRetryCount());
+        logger.info("Getting exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, apiKey: {}, retryCount: {}",
+            SERVICE_NAME, fromCurrencyCode, toCurrencyCode, apiKey.substring(0, 2), getRetryCount());
 
         ExchangeRateResponse response = client.getExchangeRate("CURRENCY_EXCHANGE_RATE", fromCurrencyCode, toCurrencyCode, apiKey);
 
