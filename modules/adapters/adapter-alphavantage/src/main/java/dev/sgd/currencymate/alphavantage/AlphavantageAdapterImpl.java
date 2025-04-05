@@ -1,5 +1,6 @@
 package dev.sgd.currencymate.alphavantage;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.sgd.currencymate.alphavantage.client.AlphavantageClient;
 import dev.sgd.currencymate.alphavantage.currency.AlphavantageCurrencyHandler;
 import dev.sgd.currencymate.alphavantage.model.daily.DailyExchangeRateResponse;
@@ -14,6 +15,7 @@ import dev.sgd.currencymate.domain.model.DailyExchangeRate;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import feign.FeignException;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.Objects;
 import java.util.Optional;
 
 import static dev.sgd.currencymate.alphavantage.currency.CurrencyCodeEnum.*;
@@ -43,20 +46,24 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
 
     private final AlphavantageClient client;
     private final AlphavantageCurrencyHandler currencyHandler;
+    private final ObjectMapper objectMapper;
     private final String apiKey;
     private final Logger logger;
 
     public AlphavantageAdapterImpl(AlphavantageClient client,
                                    AlphavantageCurrencyHandler currencyHandler,
+                                   ObjectMapper objectMapper,
                                    @Value("${app.adapter.alphavantage.apiKey}") String apiKey,
                                    @Qualifier("feignLogger") Logger logger) {
         this.client = client;
         this.currencyHandler = currencyHandler;
+        this.objectMapper = objectMapper;
         this.apiKey = apiKey;
         this.logger = logger;
     }
 
     @Override
+    @SneakyThrows
     @Retryable(
         retryFor = { ExternalServiceException.class,
                      ConnectException.class,
@@ -70,9 +77,14 @@ public class AlphavantageAdapterImpl implements AlphavantageAdapter {
         logger.info("Getting exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, apiKey: {}, retryCount: {}",
             SERVICE_NAME, fromCurrencyCode, toCurrencyCode, apiKey.substring(0, 2), getRetryCount());
 
-        ExchangeRateResponse response = client.getExchangeRate("CURRENCY_EXCHANGE_RATE", fromCurrencyCode, toCurrencyCode, apiKey);
+        String response = client.getExchangeRate("CURRENCY_EXCHANGE_RATE", fromCurrencyCode, toCurrencyCode, apiKey);
+        ExchangeRateResponse exchangeRateResponse = objectMapper.readValue(response, ExchangeRateResponse.class);
 
-        return EXCHANGE_RATE_MAPPER.toDomain(response);
+        logger.info("Got exchange rate response json from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, apiKey: {}, retryCount: {}, json: {}",
+            SERVICE_NAME, fromCurrencyCode, toCurrencyCode, apiKey.substring(0, 2), getRetryCount(), response);
+
+
+        return EXCHANGE_RATE_MAPPER.toDomain(exchangeRateResponse);
     }
 
     @Override

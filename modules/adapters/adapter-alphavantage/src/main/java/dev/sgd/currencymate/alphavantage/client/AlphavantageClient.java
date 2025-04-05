@@ -24,7 +24,7 @@ public interface AlphavantageClient {
      * </a>
      */
     @GetMapping("/query")
-    ExchangeRateResponse getExchangeRate(
+    String getExchangeRate(
         @RequestParam("function") String function,
         @RequestParam("from_currency") String fromCurrency,
         @RequestParam("to_currency") String toCurrency,
