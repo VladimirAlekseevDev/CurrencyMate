@@ -3,7 +3,6 @@ package dev.sgd.currencymate.alphavantage.client;
 import dev.sgd.currencymate.alphavantage.config.AlphavantageFeignClientConfig;
 import dev.sgd.currencymate.alphavantage.config.AlphavantageFeignErrorDecoder;
 import dev.sgd.currencymate.alphavantage.model.daily.DailyExchangeRateResponse;
-import dev.sgd.currencymate.alphavantage.model.exchangerate.ExchangeRateResponse;
 import dev.sgd.currencymate.alphavantage.model.weekly.WeeklyExchangeRateResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

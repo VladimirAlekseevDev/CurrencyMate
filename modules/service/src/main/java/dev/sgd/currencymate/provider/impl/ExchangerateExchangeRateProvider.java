@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static dev.sgd.currencymate.provider.ExchangeRateProviderEnum.ALPHAVANTAGE_PROVIDER;
 import static dev.sgd.currencymate.provider.ExchangeRateProviderEnum.EXCHANGERATE_PROVIDER;
 
 @Slf4j

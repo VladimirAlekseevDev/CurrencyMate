@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.Objects;
 import java.util.Optional;
 
 import static dev.sgd.currencymate.alphavantage.currency.CurrencyCodeEnum.*;
