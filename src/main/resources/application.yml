@@ -2,6 +2,7 @@
 server:
   port: 8080
 
+
 # Spring Boot
 spring:
   application:
@@ -14,6 +15,7 @@ spring:
   jackson:
     time-zone: ${APP_TIME_ZONE:UTC}
 
+
 # Feign (Spring Cloud)
 feign:
   client:
@@ -23,6 +25,7 @@ feign:
         connect-timeout: 5000 # ms
         read-timeout: 15000 # ms
 
+
 # Logging
 logging:
   level:
@@ -30,8 +33,9 @@ logging:
     dev.sgd.currencymate: INFO
     org.springframework: INFO
     feign.client: INFO
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
 
 # Resilience4j (Circuit Breaker)
 resilience4j:
@@ -48,6 +52,7 @@ resilience4j:
       default:
         max-attempts: 3
         wait-duration: 2000 # ms
+
 
 # Actuator
 management:
@@ -75,12 +80,26 @@ management:
     tags:
       application: ${spring.application.name}
 
+
 # Springdoc OpenAPI
 springdoc:
   api-docs:
     path: /v3/api-docs
+  group-configs:
+    - group: v1
+      paths-to-match: /api/v1/**
   swagger-ui:
     path: /swagger-ui.html
+    display-request-duration: true
+    operations-sorter: method
+    info:
+      title: Currency Mate Srv API
+      version: 1.0.0
+      description: Currency Mate Srv REST API for getting currencies (crypto and fiat) exchange rates (current and time series) using different providers
+      contact:
+        name: Support
+        email: vladimir.alekseev.dev@gmail.com
+
 
 app:
   adapter:
