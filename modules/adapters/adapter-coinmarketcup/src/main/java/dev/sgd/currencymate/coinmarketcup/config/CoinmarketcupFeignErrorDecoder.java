@@ -1,9 +1,9 @@
 package dev.sgd.currencymate.coinmarketcup.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.sgd.currencymate.coinmarketcup.model.ErrorResponse;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
-import dev.sgd.currencymate.exchangerate.model.ErrorResponse;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.slf4j.Logger;
@@ -34,14 +34,14 @@ public class CoinmarketcupFeignErrorDecoder implements ErrorDecoder {
             ErrorResponse errorResponse = objectMapper.readValue(bodyInputStream, ErrorResponse.class);
 
             if (bodyInputStream != null && errorResponse != null) {
-                logger.error("Error calling exchangerate API, methodKey={}, status={}, reason='{}', error={}",
+                logger.error("Error calling coinmarketcup API, methodKey={}, status={}, reason='{}', error={}",
                         methodKey, response.status(), response.reason(), errorResponse);
             } else {
-                logger.error("Error calling exchangerate API, response body is empty, methodKey={}, status={}, reason='{}'",
+                logger.error("Error calling coinmarketcup API, response body is empty, methodKey={}, status={}, reason='{}'",
                         methodKey, response.status(), response.reason());
             }
         } catch (Exception e) {
-            logger.error("Error parsing response body from exchangerate API, methodKey={}, status={}, reason='{}', error: {}",
+            logger.error("Error parsing response body from coinmarketcup API, methodKey={}, status={}, reason='{}', error: {}",
                     methodKey, response.status(), response.reason(), e.getMessage());
         }
 

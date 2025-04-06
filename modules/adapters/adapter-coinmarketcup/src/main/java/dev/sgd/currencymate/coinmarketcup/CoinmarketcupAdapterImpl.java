@@ -1,11 +1,15 @@
 package dev.sgd.currencymate.coinmarketcup;
 
+import dev.sgd.currencymate.coinmarketcup.client.CoinmarketcupClient;
+import dev.sgd.currencymate.coinmarketcup.currency.CoinmarketcupCurrencyHandler;
+import dev.sgd.currencymate.coinmarketcup.model.ExchangeRateDataDto;
+import dev.sgd.currencymate.coinmarketcup.model.ExchangeRateResponse;
+import dev.sgd.currencymate.coinmarketcup.model.ExchangeRateValueDto;
+import dev.sgd.currencymate.coinmarketcup.model.currency.CurrencyInfo;
 import dev.sgd.currencymate.domain.adapter.CoinmarketcupAdapter;
 import dev.sgd.currencymate.domain.error.common.AdapterException;
 import dev.sgd.currencymate.domain.error.common.ExternalServiceException;
-import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
-import dev.sgd.currencymate.exchangerate.model.ExchangeRateResponse;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +24,10 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.Optional;
 
-import static dev.sgd.currencymate.exchangerate.mapper.ExchangeRateMapper.EXCHANGE_RATE_MAPPER;
+import static dev.sgd.currencymate.coinmarketcup.mapper.ExchangeRateMapper.EXCHANGE_RATE_MAPPER;
+import static dev.sgd.currencymate.domain.enums.CurrencyType.CRYPTO;
+import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Component
 public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
@@ -28,14 +35,17 @@ public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
     private static final String SERVICE_NAME = "coinmarketcup";
 
     private final CoinmarketcupClient client;
+    private final CoinmarketcupCurrencyHandler currencyHandler;
     private final String apiKey;
     private final Logger logger;
 
     public CoinmarketcupAdapterImpl(CoinmarketcupClient client,
+                                    CoinmarketcupCurrencyHandler currencyHandler,
                                     @Value("${app.adapter.coinmarketcap.apiKey}") String apiKey,
                                     @Qualifier("feignLogger") Logger logger) {
         this.client = client;
-        this.apiKey = API_KEY_PREFIX + apiKey;
+        this.currencyHandler = currencyHandler;
+        this.apiKey = apiKey;
         this.logger = logger;
     }
 
@@ -53,12 +63,21 @@ public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
         logger.info("Getting exchange rate from service '{}', fromCurrencyCode: {}, toCurrencyCode: {}, retryCount: {}",
                 SERVICE_NAME, fromCurrencyCode, toCurrencyCode, getRetryCount());
 
-        ExchangeRateResponse response = client.getExchangeRate(apiKey, fromCurrencyCode, toCurrencyCode);
+        CurrencyInfo fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
+        CurrencyInfo toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
 
-        Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElseThrow();
-        Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElseThrow();
+        ExchangeRateResponse response = client.getExchangeRate(apiKey, fromCurrency.getSlug(), toCurrency.getCode());
+        ExchangeRateDataDto exchangeRateData = Optional.ofNullable(response.getData())
+                .filter(data -> !isEmpty(data))
+                .map(data -> data.get("1"))
+                .flatMap(data -> data.stream().findFirst())
+                .orElseThrow();
+        ExchangeRateValueDto exchangeRateValue = Optional.ofNullable(exchangeRateData.getQuote())
+                .filter(data -> !isEmpty(data))
+                .map(data -> data.get(toCurrency.getCode()))
+                .orElseThrow();
 
-        ExchangeRate exchangeRate = EXCHANGE_RATE_MAPPER.toDomain(response);
+        ExchangeRate exchangeRate = EXCHANGE_RATE_MAPPER.toDomain(exchangeRateValue);
         EXCHANGE_RATE_MAPPER.setCurrenciesNameAndType(exchangeRate, fromCurrency, toCurrency);
 
         return exchangeRate;
@@ -66,12 +85,12 @@ public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
 
     @Override
     public boolean canProvideCurrentExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
-        Currency fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElse(null);
-        if (fromCurrency == null) {
+        CurrencyInfo fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElse(null);
+        if (fromCurrency == null || CRYPTO.equals(fromCurrency.getType())) {
             return false;
         }
-        Currency toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElse(null);
-        if (toCurrency == null) {
+        CurrencyInfo toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElse(null);
+        if (toCurrency == null || FIAT.equals(toCurrency.getType())) {
             return false;
         }
 

@@ -18,12 +18,16 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
 import static dev.sgd.currencymate.exchangerate.ExchangerateAdapterImpl.API_KEY_PREFIX;
 import static dev.sgd.currencymate.exchangerate.mapper.CurrencyMapper.CURRENCY_MAPPER;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Slf4j
@@ -49,24 +53,22 @@ public class ExchangerateCurrencyHandler {
             """;
 
 
+    private final Map<String, Currency> currencies;
     private final String apiKey;
     private final ExchangerateClient client;
     private final Logger logger;
 
-    private List<Currency> fiatCurrencies;
-
     public ExchangerateCurrencyHandler(@Value("${app.adapter.exchangerate.apiKey}") String apiKey,
                                        ExchangerateClient client,
                                        @Qualifier("feignLogger") Logger logger) {
+        this.currencies = new HashMap<>();
         this.apiKey = API_KEY_PREFIX + apiKey;
         this.client = client;
         this.logger = logger;
     }
 
     public Optional<Currency> getCurrencyByCode(String currencyCode) {
-        return fiatCurrencies.stream()
-                .filter(currency -> currency.getCode().equals(currencyCode))
-                .findFirst();
+        return Optional.ofNullable(currencies.get(currencyCode));
     }
 
     @Retryable(
@@ -83,7 +85,7 @@ public class ExchangerateCurrencyHandler {
         log.info(START_LOADING_CURRENCIES_LOG_MSG, FIAT);
 
         try {
-            fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
+            List<Currency> fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
                     .map(AllCurrenciesResponse::getSupportedCodes)
                     .map(CURRENCY_MAPPER::toDomains)
                     .filter(currencies -> !isEmpty(currencies))
@@ -91,12 +93,17 @@ public class ExchangerateCurrencyHandler {
                         logger.error(ERROR_LOADING_CURRENCIES_EMPTY_BODY_LOG_MSG, FIAT);
                         return new AdapterException();
                     });
+
+
+            Map<String, Currency> currencyMap = fiatCurrencies.stream()
+                    .collect(toMap(Currency::getCode, identity()));
+            currencies.putAll(currencyMap);
         } catch (Exception e) {
             logger.error(ERROR_LOADING_CURRENCIES_LOG_MSG, FIAT, e.getMessage(), e);
             throw new AdapterException();
         }
 
-        log.info(FINISHED_LOADING_CURRENCIES_LOG_MSG, FIAT, fiatCurrencies.size());
+        log.info(FINISHED_LOADING_CURRENCIES_LOG_MSG, FIAT, currencies.size());
     }
 
 }
