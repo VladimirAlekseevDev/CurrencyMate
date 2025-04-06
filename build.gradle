@@ -21,6 +21,9 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
+        options.fork = true
+        options.incremental = true
+        options.compilerArgs += ["-parameters"]
     }
     java {
         toolchain {
@@ -31,12 +34,6 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-    }
-
-    // Compile optimization
-    tasks.withType(JavaCompile).configureEach {
-        options.fork = true
-        options.incremental = true
     }
 
     dependencies {
@@ -50,11 +47,12 @@ allprojects {
         )
         implementation(
                 "org.springframework.boot:spring-boot-starter:$springBootVersion",
-                "org.springframework.boot:spring-boot-starter-logging",
 
+                /* Logging */
+                "org.springframework.boot:spring-boot-starter-logging",
                 "ch.qos.logback:logback-core:$logbackVersion",
                 "ch.qos.logback:logback-classic:$logbackVersion",
-                "net.logstash.logback:logstash-logback-encoder:8.0",
+                "net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion",
 
                 "org.mapstruct:mapstruct:$mapstructVersion",
                 "org.apache.commons:commons-lang3:$commonsLang3Version"
@@ -78,6 +76,12 @@ dependencies {
             project(":rest-api"),
             project(":adapter-alphavantage"),
             project(":adapter-exchangerate"),
+
+            /* Logging */
+            "org.springframework.boot:spring-boot-starter-logging",
+            "ch.qos.logback:logback-core:$logbackVersion",
+            "ch.qos.logback:logback-classic:$logbackVersion",
+            "net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion",
 
             /* Spring Cloud */
             "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j",

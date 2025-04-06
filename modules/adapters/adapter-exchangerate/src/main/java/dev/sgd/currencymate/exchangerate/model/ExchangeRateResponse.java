@@ -1,15 +1,14 @@
 package dev.sgd.currencymate.exchangerate.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import dev.sgd.currencymate.exchangerate.config.ExchangerateDateTimeDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 @Data
 @NoArgsConstructor
@@ -27,14 +26,14 @@ public class ExchangeRateResponse {
     private Long timeLastUpdateUnix;
 
     @JsonProperty("time_last_update_utc")
-    @JsonFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss Z", shape = STRING)
+    @JsonDeserialize(using = ExchangerateDateTimeDeserializer.class)
     private OffsetDateTime timeLastUpdateUtc;
 
     @JsonProperty("time_next_update_unix")
     private Long timeNextUpdateUnix;
 
     @JsonProperty("time_next_update_utc")
-    @JsonFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss Z", shape = STRING)
+    @JsonDeserialize(using = ExchangerateDateTimeDeserializer.class)
     private OffsetDateTime timeNextUpdateUtc;
 
     @JsonProperty("base_code")
