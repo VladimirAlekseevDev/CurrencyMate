@@ -74,8 +74,9 @@ dependencies {
             project(":common-config"),
             project(":service"),
             project(":rest-api"),
-            project(":adapter-alphavantage"),
             project(":adapter-exchangerate"),
+            project(":adapter-coinmarketcup"),
+            project(":adapter-alphavantage"), // TODO: disabled for now
 
             /* Logging */
             "org.springframework.boot:spring-boot-starter-logging",
