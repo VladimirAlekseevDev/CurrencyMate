@@ -5,7 +5,7 @@ server:
 # Spring Boot
 spring:
   application:
-    name: CurrencyMate
+    name: CurrencyMateSrv
   main:
     banner-mode: console
     lazy-initialization: true
@@ -72,6 +72,8 @@ management:
     distribution:
       percentiles-histogram:
         http.server.requests: true
+    tags:
+      application: ${spring.application.name}
 
 # Springdoc OpenAPI
 springdoc:

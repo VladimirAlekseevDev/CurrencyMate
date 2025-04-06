@@ -85,6 +85,7 @@ dependencies {
             /* Spring Monitoring and Management dependencies */
             "org.springframework.boot:spring-boot-starter-actuator",
             "io.micrometer:micrometer-registry-prometheus",
+            "io.github.resilience4j:resilience4j-micrometer"
     )
 
     testImplementation (

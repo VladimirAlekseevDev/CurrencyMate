@@ -5,7 +5,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'currency-mate'
+rootProject.name = 'currency-mate-srv'
 
 gradle.beforeProject {
     logger.lifecycle("Configuring project ${rootProject.name}")
