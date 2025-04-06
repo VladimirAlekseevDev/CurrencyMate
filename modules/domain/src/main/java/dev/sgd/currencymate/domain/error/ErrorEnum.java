@@ -6,15 +6,38 @@ import lombok.Getter;
 public enum ErrorEnum {
 
     /* Common */
-    UNKNOWN_ERROR("Internal exception occurred while performing the operation, please try again later"),
-    REQUEST_VALIDATION_ERROR("Request parameters are not valid, check the API specs"),
-    ADAPTER_ERROR("Exception occurred while calling another service, please try again later"),
+    UNKNOWN_ERROR(
+            """
+            😵 Something went wrong on our side while processing your request
+
+            Don't worry — it's not your fault
+            Please try again in a few moments 🙏
+            """
+    ),
+    REQUEST_VALIDATION_ERROR(
+            """
+            🤨 Oops! Looks like some of your request parameters are invalid
+
+            Please double-check the API documentation and make sure all required fields are correct
+            We believe in you! 💪
+            """
+    ),
+    ADAPTER_ERROR(
+            """
+            🔌 Failed to retrieve data from one of our external providers
+
+            This usually happens when the upstream service is down or slow
+            Please try again later — we’re keeping an eye on it 👀
+            """
+    ),
 
     /* More specific */
     FIND_EXCHANGE_RATE_PROVIDER_ERROR(
             """
-            We don't yet have a suitable provider for the requested currencies 😟
-            Please try using other currencies
+            😟 We don't yet have a suitable provider for the requested currencies
+
+            Try using different currency pairs (like BTC → USD or USD → CNY)
+            Our team is constantly learning and improving! 🤖✨
             """
     );
 

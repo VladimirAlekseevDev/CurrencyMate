@@ -104,8 +104,7 @@ public class AlphavantageCurrencyHandler {
 
             return currencies;
         } catch (Exception e) {
-            log.error("Error loading Alphavantage {} currencies from CSV file: {}, message: {}",
-                    currencyType, filePath, e.getMessage(), e);
+            log.error(ERROR_LOADING_CURRENCIES_LOG_MSG, currencyType, e.getMessage());
 
             throw new InternalException();
         }
