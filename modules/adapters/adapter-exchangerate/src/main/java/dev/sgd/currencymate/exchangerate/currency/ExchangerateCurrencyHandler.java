@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +29,25 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Slf4j
 @Component
 public class ExchangerateCurrencyHandler {
+
+    private static final String START_LOADING_CURRENCIES_LOG_MSG =
+            """
+            🪙 Loading Exchangerate {} currencies from API...
+            """;
+    private static final String FINISHED_LOADING_CURRENCIES_LOG_MSG =
+            """
+            ☑️ Finished loading Exchangerate {} currencies from API, currencies count: {}
+            """;
+
+    private static final String ERROR_LOADING_CURRENCIES_EMPTY_BODY_LOG_MSG =
+            """
+            ❌ Failed to load Exchangerate {} currencies from API, response body is empty
+            """;
+    private static final String ERROR_LOADING_CURRENCIES_LOG_MSG =
+            """
+            ❌ Failed to load Exchangerate {} currencies from API, error message: {}
+            """;
+
 
     private final String apiKey;
     private final ExchangerateClient client;
@@ -62,7 +80,7 @@ public class ExchangerateCurrencyHandler {
     )
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesFromApi() {
-        log.info("Loading Exchangerate {} currencies from API", FIAT);
+        log.info(START_LOADING_CURRENCIES_LOG_MSG, FIAT);
 
         try {
             fiatCurrencies = Optional.ofNullable(client.getAllCurrencies(apiKey))
@@ -70,18 +88,15 @@ public class ExchangerateCurrencyHandler {
                     .map(CURRENCY_MAPPER::toDomains)
                     .filter(currencies -> !isEmpty(currencies))
                     .orElseThrow(() -> {
-                        logger.error("Failed to load Exchangerate currencies from API, response body is empty");
+                        logger.error(ERROR_LOADING_CURRENCIES_EMPTY_BODY_LOG_MSG, FIAT);
                         return new AdapterException();
                     });
         } catch (Exception e) {
-            logger.error("!!! Failed to load Exchangerate currencies from API, key={}, error message: {}", apiKey, e.getMessage(), e);
-            logger.warn("Initializing Exchangerate currencies with empty list because of the error during initialization");
-            fiatCurrencies = new ArrayList<>();
-
-            return;
+            logger.error(ERROR_LOADING_CURRENCIES_LOG_MSG, FIAT, e.getMessage(), e);
+            throw new AdapterException();
         }
 
-        log.info("Loaded Exchangerate {} {} currencies from API", fiatCurrencies.size(), FIAT);
+        log.info(FINISHED_LOADING_CURRENCIES_LOG_MSG, FIAT, fiatCurrencies.size());
     }
 
 }

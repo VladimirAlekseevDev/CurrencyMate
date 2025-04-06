@@ -7,26 +7,39 @@ import dev.sgd.currencymate.domain.model.Currency;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static dev.sgd.currencymate.domain.enums.CurrencyType.CRYPTO;
 import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 @Getter
-@Component
+//@Component TODO disabled, needs payment
 @RequiredArgsConstructor
 public class AlphavantageCurrencyHandler {
+
+    private static final String START_LOADING_CURRENCIES_LOG_MSG =
+            """
+            🪙 Loading Alphavantage {} and {} currencies from CSV files: {}
+            """;
+    private static final String FINISHED_LOADING_CURRENCIES_LOG_MSG =
+            """
+            ☑️ Finished loading Alphavantage {} and {} currencies from CSV files, {} currencies count: {}, {} currencies count: {}
+            """;
+
+    private static final String ERROR_LOADING_CURRENCIES_LOG_MSG =
+            """
+            ❌ Failed to load Alphavantage {} currencies from CSV file, error message: {}
+            """;
 
     private static final String FIAT_CURRENCIES_CSV_PATH = "physical_currency_list.csv";
     private static final String CRYPTO_CURRENCIES_CSV_PATH = "digital_currency_list.csv";
@@ -48,18 +61,20 @@ public class AlphavantageCurrencyHandler {
                 .findFirst();
     }
 
-    @EventListener(ApplicationReadyEvent.class)
+    //@EventListener(ApplicationReadyEvent.class) TODO disabled, needs payment
     public void loadCurrenciesFromCsv() {
-        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH, FIAT);
-        cryptoCurrencies = loadCurrenciesFromCSV(CRYPTO_CURRENCIES_CSV_PATH, CurrencyType.CRYPTO);
+        log.info(START_LOADING_CURRENCIES_LOG_MSG,
+                FIAT, CRYPTO, List.of(FIAT_CURRENCIES_CSV_PATH, CRYPTO_CURRENCIES_CSV_PATH));
 
-        log.info("Loaded Alphavantage {} {} currencies and {} crypto currencies from CSV files",
-                fiatCurrencies.size(), FIAT, cryptoCurrencies.size());
+        fiatCurrencies = loadCurrenciesFromCSV(FIAT_CURRENCIES_CSV_PATH, FIAT);
+        cryptoCurrencies = loadCurrenciesFromCSV(CRYPTO_CURRENCIES_CSV_PATH, CRYPTO);
+
+        log.info(FINISHED_LOADING_CURRENCIES_LOG_MSG, FIAT, CRYPTO,
+                FIAT, fiatCurrencies.size(),
+                CRYPTO, cryptoCurrencies.size());
     }
 
     private List<Currency> loadCurrenciesFromCSV(String filePath, CurrencyType currencyType) {
-        log.info("Loading Alphavantage {} currencies from CSV file: {}", currencyType, filePath);
-
         List<Currency> currencies = new ArrayList<>(100);
         Resource fiatCurrencyResource = new ClassPathResource(filePath);
         try (Reader reader = new InputStreamReader(fiatCurrencyResource.getInputStream(), UTF_8);
@@ -71,23 +86,21 @@ public class AlphavantageCurrencyHandler {
             String[] nextRecord;
             while ((nextRecord = csvReader.readNext()) != null) {
                 if (nextRecord.length != 2) {
-                    log.error("Invalid CSV record: '{}', expected 2 columns (currency code, currency name), skipping",
-                            String.join(",", nextRecord));
-                    continue;
+                    log.error(ERROR_LOADING_CURRENCIES_LOG_MSG, currencyType,
+                            "Invalid CSV record: expected 2 columns (currency code, currency name), record: " + Arrays.toString(nextRecord));
+                    throw new InternalException();
                 }
 
                 String code = nextRecord[0].trim();
                 String name = nextRecord[1].trim();
 
                 if (code.isEmpty() || name.isEmpty()) {
-                    log.error("Invalid CSV record: '{}', code or name is empty, skipping",
-                            String.join(",", nextRecord));
-                    continue;
+                    log.error(ERROR_LOADING_CURRENCIES_LOG_MSG, currencyType,
+                            "Invalid CSV record: currency code or currency name is empty, record: " + Arrays.toString(nextRecord));
+                    throw new InternalException();
                 }
                 currencies.add(new Currency(code, name, currencyType));
             }
-
-            log.info("Read {} {} currencies from CSV file: {}", currencies.size(), currencyType, filePath);
 
             return currencies;
         } catch (Exception e) {

@@ -7,12 +7,12 @@ import dev.sgd.currencymate.domain.model.WeeklyExchangeRate;
 import dev.sgd.currencymate.provider.ExchangeRateProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import static dev.sgd.currencymate.provider.ExchangeRateProviderEnum.ALPHAVANTAGE_PROVIDER;
 
+// TODO: turned off for now, waiting for payment
 @Slf4j
-@Service
+//@Service
 @RequiredArgsConstructor
 public class AlphavantageExchangeRateProvider implements ExchangeRateProvider {
 

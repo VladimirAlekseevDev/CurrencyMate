@@ -6,7 +6,7 @@ server:
 # Spring Boot
 spring:
   application:
-    name: CurrencyMateSrv
+    name: CurrencyMate
   main:
     banner-mode: console
     lazy-initialization: true
