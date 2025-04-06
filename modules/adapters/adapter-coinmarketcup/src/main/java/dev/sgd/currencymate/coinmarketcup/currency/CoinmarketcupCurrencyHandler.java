@@ -60,7 +60,7 @@ public class CoinmarketcupCurrencyHandler {
     private final CoinmarketcupClient client;
     private final Logger logger;
 
-    public CoinmarketcupCurrencyHandler(@Value("${app.adapter.exchangerate.apiKey}") String apiKey,
+    public CoinmarketcupCurrencyHandler(@Value("${app.adapter.coinmarketcap.apiKey}") String apiKey,
                                         CoinmarketcupClient client,
                                         @Qualifier("feignLogger") Logger logger) {
         this.currencies = new HashMap<>();

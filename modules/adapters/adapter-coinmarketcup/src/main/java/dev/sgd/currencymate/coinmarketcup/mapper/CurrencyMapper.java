@@ -22,7 +22,7 @@ public interface CurrencyMapper {
 
     @Named("toDomainCrypto")
     @Mapping(target = "code", source = "symbol")
-    @Mapping(target = "type", expression = "java(CurrencyType.CRYPTO)")
+    @Mapping(target = "type", expression = "java(dev.sgd.currencymate.domain.enums.CurrencyType.CRYPTO)")
     CurrencyInfo toDomainCrypto(CurrencyInfoDto dto);
 
     @IterableMapping(qualifiedByName = "toDomainFiat")
@@ -30,6 +30,6 @@ public interface CurrencyMapper {
 
     @Named("toDomainFiat")
     @Mapping(target = "code", source = "sign")
-    @Mapping(target = "type", expression = "java(CurrencyType.FIAT)")
+    @Mapping(target = "type", expression = "java(dev.sgd.currencymate.domain.enums.CurrencyType.FIAT)")
     CurrencyInfo toDomainFiat(CurrencyInfoDto dto);
 }
