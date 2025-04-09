@@ -3,6 +3,7 @@ package dev.sgd.currencymate.coinmarketcup.mapper;
 import dev.sgd.currencymate.coinmarketcup.model.ExchangeRateValueDto;
 import dev.sgd.currencymate.coinmarketcup.model.currency.CurrencyInfo;
 import dev.sgd.currencymate.config.DefaultMapperConfig;
+import dev.sgd.currencymate.domain.model.Currency;
 import dev.sgd.currencymate.domain.model.ExchangeRate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,12 +27,16 @@ public interface ExchangeRateMapper {
     default void setCurrenciesNameAndType(@MappingTarget ExchangeRate exchangeRate,
                                           CurrencyInfo fromCurrency,
                                           CurrencyInfo toCurrency) {
-        exchangeRate.getFrom().setCode(fromCurrency.getCode());
-        exchangeRate.getFrom().setName(fromCurrency.getName());
-        exchangeRate.getFrom().setType(fromCurrency.getType());
+        Currency from = new Currency();
+        from.setCode(fromCurrency.getCode());
+        from.setName(fromCurrency.getName());
+        from.setType(fromCurrency.getType());
+        exchangeRate.setFrom(from);
 
-        exchangeRate.getTo().setCode(toCurrency.getCode());
-        exchangeRate.getTo().setName(toCurrency.getName());
-        exchangeRate.getTo().setType(toCurrency.getType());
+        Currency to = new Currency();
+        to.setCode(toCurrency.getCode());
+        to.setName(toCurrency.getName());
+        to.setType(toCurrency.getType());
+        exchangeRate.setTo(to);
     }
 }

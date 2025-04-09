@@ -70,11 +70,10 @@ public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
         ExchangeRateDataDto exchangeRateData = Optional.ofNullable(response.getData())
                 .filter(data -> !isEmpty(data))
                 .map(data -> data.get("1"))
-                .flatMap(data -> data.stream().findFirst())
                 .orElseThrow();
         ExchangeRateValueDto exchangeRateValue = Optional.ofNullable(exchangeRateData.getQuote())
-                .filter(data -> !isEmpty(data))
-                .map(data -> data.get(toCurrency.getCode()))
+                .filter(quotes -> !isEmpty(quotes))
+                .map(quotes -> quotes.get(toCurrency.getCode()))
                 .orElseThrow();
 
         ExchangeRate exchangeRate = EXCHANGE_RATE_MAPPER.toDomain(exchangeRateValue);
@@ -86,11 +85,11 @@ public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
     @Override
     public boolean canProvideCurrentExchangeRate(String fromCurrencyCode, String toCurrencyCode) {
         CurrencyInfo fromCurrency = currencyHandler.getCurrencyByCode(fromCurrencyCode).orElse(null);
-        if (fromCurrency == null || CRYPTO.equals(fromCurrency.getType())) {
+        if (fromCurrency == null || FIAT.equals(fromCurrency.getType())) {
             return false;
         }
         CurrencyInfo toCurrency = currencyHandler.getCurrencyByCode(toCurrencyCode).orElse(null);
-        if (toCurrency == null || FIAT.equals(toCurrency.getType())) {
+        if (toCurrency == null || CRYPTO.equals(toCurrency.getType())) {
             return false;
         }
 

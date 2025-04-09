@@ -29,7 +29,7 @@ public interface CurrencyMapper {
     List<CurrencyInfo> toDomainFiat(List<CurrencyInfoDto> dtos);
 
     @Named("toDomainFiat")
-    @Mapping(target = "code", source = "sign")
+    @Mapping(target = "code", source = "symbol")
     @Mapping(target = "type", expression = "java(dev.sgd.currencymate.domain.enums.CurrencyType.FIAT)")
     CurrencyInfo toDomainFiat(CurrencyInfoDto dto);
 }

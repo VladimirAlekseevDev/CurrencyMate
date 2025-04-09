@@ -18,16 +18,13 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static dev.sgd.currencymate.coinmarketcup.mapper.CurrencyMapper.CURRENCY_MAPPER;
 import static dev.sgd.currencymate.domain.enums.CurrencyType.CRYPTO;
 import static dev.sgd.currencymate.domain.enums.CurrencyType.FIAT;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Slf4j
@@ -55,7 +52,7 @@ public class CoinmarketcupCurrencyHandler {
             """;
 
 
-    private final Map<String, CurrencyInfo> currencies;
+    private final Map<String, List<CurrencyInfo>> currencies;
     private final String apiKey;
     private final CoinmarketcupClient client;
     private final Logger logger;
@@ -70,7 +67,8 @@ public class CoinmarketcupCurrencyHandler {
     }
 
     public Optional<CurrencyInfo> getCurrencyByCode(String currencyCode) {
-        return Optional.ofNullable(currencies.get(currencyCode));
+        return Optional.ofNullable(currencies.get(currencyCode))
+                .map(List::getFirst);
     }
 
     @Retryable(
@@ -99,8 +97,18 @@ public class CoinmarketcupCurrencyHandler {
                         return new AdapterException();
                     });
 
-            Map<String, CurrencyInfo> cryptoCurrenciesMap = cryptoCurrencies.stream()
-                    .collect(toMap(CurrencyInfo::getCode, identity()));
+            Map<String, List<CurrencyInfo>> cryptoCurrenciesMap = cryptoCurrencies.stream()
+                    .collect(groupingBy(
+                            CurrencyInfo::getCode,
+                            collectingAndThen(
+                                toCollection(ArrayList::new),
+                                list -> {
+                                    list.sort(comparingInt(CurrencyInfo::getRank));
+                                    return list;
+                                }
+                            )
+                        )
+                    );
             currencies.putAll(cryptoCurrenciesMap);
         } catch (Exception e) {
             logger.error(ERROR_LOADING_CURRENCIES_LOG_MSG, CRYPTO, e.getMessage(), e);
@@ -108,7 +116,7 @@ public class CoinmarketcupCurrencyHandler {
         }
 
         try {
-            fiatCurrencies = Optional.ofNullable(client.getFiatCurrencies(apiKey, true))
+            fiatCurrencies = Optional.ofNullable(client.getFiatCurrencies(apiKey, false))
                     .map(GetCurrenciesResponse::getData)
                     .map(CURRENCY_MAPPER::toDomainFiat)
                     .filter(currencies -> !isEmpty(currencies))
@@ -117,8 +125,9 @@ public class CoinmarketcupCurrencyHandler {
                         return new AdapterException();
                     });
 
-            Map<String, CurrencyInfo> fiatCurrenciesMap = fiatCurrencies.stream()
-                    .collect(toMap(CurrencyInfo::getCode, identity()));
+            Map<String, List<CurrencyInfo>> fiatCurrenciesMap = fiatCurrencies.stream()
+                    .filter(c -> c.getCode() != null) // Can be null for metals
+                    .collect(groupingBy(CurrencyInfo::getCode));
             currencies.putAll(fiatCurrenciesMap);
         } catch (Exception e) {
             logger.error(ERROR_LOADING_CURRENCIES_LOG_MSG, FIAT, e.getMessage(), e);

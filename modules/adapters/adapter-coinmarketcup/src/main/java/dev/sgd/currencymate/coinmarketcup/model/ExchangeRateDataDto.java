@@ -34,7 +34,7 @@ public class ExchangeRateDataDto {
     private OffsetDateTime dateAdded;
 
     @JsonProperty("tags")
-    private List<Map<String, String>> tags;
+    private List<ExchangeRateTagDto> tags;
 
     @JsonProperty("max_supply")
     private BigDecimal maxSupply;

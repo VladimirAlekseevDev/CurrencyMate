@@ -45,7 +45,7 @@ public interface CoinmarketcupClient {
      *     Documentation for Get Fiat Currencies API endpoint
      * </a>
      */
-    @GetMapping("/v1/fiat/map?include_metals=true")
+    @GetMapping("/v1/fiat/map")
     GetCurrenciesResponse getFiatCurrencies(
             @RequestHeader(AUTH_HEADER) String apiKey,
             @RequestParam(value = "include_metals", defaultValue = "true", required = false) Boolean includeMetals);
