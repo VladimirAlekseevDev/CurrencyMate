@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static dev.sgd.currencymate.provider.ExchangeRateProviderEnum.COINMARKETCUP_PROVIDER;
-import static dev.sgd.currencymate.provider.ExchangeRateProviderEnum.EXCHANGERATE_PROVIDER;
 
 @Slf4j
 @Service
@@ -25,7 +24,7 @@ public class CoinmarketcupExchangeRateProvider implements ExchangeRateProvider {
                 fromCurrency, toCurrency);
 
         ExchangeRate exchangeRate = coinmarketcupAdapter.getExchangeRate(fromCurrency, toCurrency);
-        exchangeRate.setProviderName(EXCHANGERATE_PROVIDER.getName());
+        exchangeRate.setProviderName(COINMARKETCUP_PROVIDER.getName());
 
         log.info("Got exchange rate fromCurrency: {}, toCurrency: {}, exchangeRate: {}",
                 fromCurrency, toCurrency, exchangeRate);

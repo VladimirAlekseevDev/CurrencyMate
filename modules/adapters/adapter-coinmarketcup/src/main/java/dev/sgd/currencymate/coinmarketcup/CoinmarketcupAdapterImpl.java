@@ -69,7 +69,7 @@ public class CoinmarketcupAdapterImpl implements CoinmarketcupAdapter {
         ExchangeRateResponse response = client.getExchangeRate(apiKey, fromCurrency.getSlug(), toCurrency.getCode());
         ExchangeRateDataDto exchangeRateData = Optional.ofNullable(response.getData())
                 .filter(data -> !isEmpty(data))
-                .map(data -> data.get("1"))
+                .map(data -> data.entrySet().iterator().next().getValue())
                 .orElseThrow();
         ExchangeRateValueDto exchangeRateValue = Optional.ofNullable(exchangeRateData.getQuote())
                 .filter(quotes -> !isEmpty(quotes))
