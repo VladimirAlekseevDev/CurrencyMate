@@ -37,9 +37,7 @@ public class CoinmarketcupCurrencyHandler {
             """;
     private static final String FINISHED_LOADING_CURRENCIES_LOG_MSG =
             """
-            ☑️ Finished loading Coinmarketcup {} and {} currencies from API
-            {} currencies count: {}
-            {} currencies count: {}
+            ☑️ Finished loading Coinmarketcup {} and {} currencies from API, {} currencies count: {}, {} currencies count: {}
             """;
 
     private static final String ERROR_LOADING_CURRENCIES_EMPTY_BODY_LOG_MSG =
